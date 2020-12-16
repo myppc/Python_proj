@@ -3,7 +3,7 @@ import random
 import tool
 from config import *
 from img_dis import *
-
+from PIL import Image
 class Person():
     dna_list = []
     index = 0

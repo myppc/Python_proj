@@ -91,3 +91,30 @@ def get_color(x, y,width,height):
     ret.reverse()
     return ret
 
+
+def rgb255_to_hsv(R,G,B):
+    r, g, b = R/255.,G/255.,B/255.
+    mx = max(r, g, b)
+    mn = min(r, g, b)
+    m = mx-mn
+    if mx == mn:
+        h = 0
+    elif mx == r:
+        if g >= b:
+            h = ((g-b)/m)*60
+        else:
+            h = ((g-b)/m)*60 + 360
+    elif mx == g:
+        h = ((b-r)/m)*60 + 120
+    elif mx == b:
+        h = ((r-g)/m)*60 + 240
+    if mx == 0:
+        s = 0
+    else:
+        s = m/mx
+    v = mx
+    h = h /360 * 255
+    s = s * 255.0
+    v = v * 255.0
+    return [h,s,v]
+

@@ -10,4 +10,5 @@ FILTER_COUNT = 10 #排名筛选
 STATE = "NORMAL" #状态机当前状态
 DNA_ID = 0 #dna唯一id
 INIT_DEST_PER = 2 #初始期望百分比python 
-MUTE = 5
+MUTE_NUM = 5 #最大变异数目
+COMPARE_IMG_SIZE = 16#比较时图片大小

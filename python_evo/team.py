@@ -57,7 +57,7 @@ class Team:
         ret = []
         for i in range(max_count):
             parents = tool.pick_item_in_list(parents_list,2)
-            son = parents[0].create_son(parents[1],MUTE)
+            son = parents[0].create_son(parents[1],MUTE_NUM)
             son.set_index(i)
             ret.append(son)
         self.person_list = ret

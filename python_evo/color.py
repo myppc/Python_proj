@@ -47,9 +47,9 @@ class Color:
         else:
             s = m/mx
         v = mx
-        self.h = h / 2
-        self.s = s #* 255.0
-        self.v = v #* 255.0
+        self.h = h #/ 2
+        self.s = s * 100.0
+        self.v = v * 100.0
         return self.h,self.s,self.v
 
     def compare(self,color):
