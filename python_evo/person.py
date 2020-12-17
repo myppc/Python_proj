@@ -100,9 +100,7 @@ class Person():
     def cal_score(self,dest_img):
         self_img = self.get_cur_image()
         dis = is_imgs_similar(dest_img,self_img)
-        if dis == 0:
-            return 1
-        return 1/dis 
+        return dis 
 
     def copy(self):
         copy_person = Person()

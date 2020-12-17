@@ -5,6 +5,7 @@ import time
 import tool 
 import numpy as np
 from config import *
+import math
 # 计算Hash
 # def phash(img):
 #     img = img.resize((50, 50), Image.ANTIALIAS).convert('L')
@@ -30,21 +31,23 @@ def is_imgs_similar(img1, img2):
     l1 = np.asarray(list1)
     l2 = np.asarray(list2)
     dis = np.subtract(l1,l2)
-    dis = np.maximum(dis, -dis)
-    avg = dis.sum()/np.size(dis)
     list_dis = dis.tolist()
-    ret = reduce(
-        lambda x, y: x | (y[1] << y[0]),
-        enumerate(map(lambda i: 0 if i < avg else 1,list_dis)),
-        0
-    )
-    return bin(ret).count('1')
+    count = 0
+    for dis in list_dis:
+        if math.sqrt(dis[0] * dis[0] +dis[1] * dis[1] + dis[2]*dis[2]) < COMPARE_DIS:
+            count = count + 1
+    # ret = reduce(
+    #     lambda x, y: x | (y[1] << y[0]),
+    #     enumerate(map(lambda i: 0 if i < avg else 1,list_dis)),
+    #     0
+    # )
+    return count/(COMPARE_IMG_SIZE*COMPARE_IMG_SIZE)
 
 def get_hsv_list(src_img):
     img = src_img.resize((COMPARE_IMG_SIZE,COMPARE_IMG_SIZE), Image.ANTIALIAS)
     hsv_list = []
     for color in img.getdata():
-        hsv_list = hsv_list + tool.rgb255_to_hsv(color[0],color[1],color[2])
+        hsv_list.append(tool.rgb255_to_hsv(color[0],color[1],color[2]))
     return hsv_list
 
 # if __name__ == '__main__':

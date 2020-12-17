@@ -46,7 +46,7 @@ class Team:
         for index in range(len(sort_list)):
             ret.append(sort_list[index][0])
         self.person_list = ret
-        print(str(self.count) + "===============> max " ,sort_list[index][1] )
+        print(str(self.count) + "===============> max " ,sort_list[0][1] )
 
     #繁殖下一代
     def create_next_list(self):
@@ -54,6 +54,7 @@ class Team:
         self.sort_list()
         max_count = len(self.person_list)
         parents_list = self.person_list[0:FILTER_COUNT]
+        best = self.person_list[0]
         ret = []
         for i in range(max_count):
             parents = tool.pick_item_in_list(parents_list,2)
@@ -61,6 +62,7 @@ class Team:
             son.set_index(i)
             ret.append(son)
         self.person_list = ret
+        self.person_list[best.index] = best
 
     def draw_team(self):
         for person in self.person_list:

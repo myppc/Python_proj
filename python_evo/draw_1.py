@@ -88,13 +88,9 @@ def get_draw_info():
 def read_demo():
     img_path = "demo.png"
     img = Image.open(img_path)
-    ddd = img.resize((16,16), Image.ANTIALIAS)
     return img
 
 if __name__ == "__main__":
-    color = Color(125/255,89/255,144/255)
-    print(color.get_hsv())
-
     global temp_person
     temp_person = None
     dest_img = read_demo()
