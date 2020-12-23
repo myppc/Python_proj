@@ -4,5 +4,5 @@ DIS = (0.3,0.6)
 CMD = {
     "CREATE":"0",
     "NET_RUN":"1",
-    "CONTROL":"3"
+    "CONTROL":"2"
 }

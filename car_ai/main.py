@@ -37,7 +37,7 @@ class Main:
             list.append(float(data[index]))
         
         dir_ret,speed_ret = net.feedforward(list)
-        msg = "s" + index+"," + str(dir_ret)+","+str(speed_ret) + "e"
+        msg = "s"+ CMD["CONTROL"]+"," + index+"," + str(dir_ret)+","+str(speed_ret) + "e"
         self.socket.sendMsg(msg)
 
     def cut_str(self,msg,ret = []):
