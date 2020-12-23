@@ -12,15 +12,14 @@ class socket_server:
     def check_recv(self):
         count = 0
         while True:
-            print("before")
+
             try:
-                data = self._connect.recv(1024)
+                data = self._connect.recv(1024 * 1024 *3)
             except BlockingIOError as e:
                 data = None
-            print("after")
             if data:
-               if self._get_data_call_back:
-                   self._get_data_call_back(data) 
+                if self._get_data_call_back:
+                    self._get_data_call_back(data) 
             time.sleep(0.01)
             count += 1
 
@@ -32,9 +31,10 @@ class socket_server:
     def start_listener(self):
         self._socket.listen()
         self._connect, addr = self._socket.accept()
-        self._connect.settimeout(0)
+        self._connect.settimeout(10)
         print(self._connect)
         print('连接地址：', addr)
+        self.start_receive()
 
     def start_receive(self):
         thread = threading.Thread(target=self.check_recv)
@@ -43,4 +43,6 @@ class socket_server:
     def set_receive_data_call_back(self,call):
         self._get_data_call_back = call
 
-server = socket_server()
+    def sendMsg(self,msg):
+        self._connect.send(msg.encode()))
+

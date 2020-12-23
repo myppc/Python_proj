@@ -7,6 +7,7 @@ class Team:
     dest_per = INIT_DEST_PER
     max_per = 0
     count = 0
+    last_max_count = 0
     #初始化族群
     def init_team(self,count):
         self.dest_per = 0
@@ -27,7 +28,6 @@ class Team:
     #排序
     def sort_list(self):
         sort_list = []
-        max_per = 0
         for person in self.person_list:
             score = person.cal_score(self.dest_img)
             if len(sort_list) == 0:
@@ -46,11 +46,17 @@ class Team:
         for index in range(len(sort_list)):
             ret.append(sort_list[index][0])
         self.person_list = ret
-        print(str(self.count) + "===============> max " ,sort_list[0][1] )
+        if sort_list[0][1] > self.max_per:
+            self.max_per = sort_list[0][1]
+            self.last_max_count = self.count
+        print(str(self.count) + "===============> max " ,sort_list[0][1],self.last_max_count )
 
     #繁殖下一代
     def create_next_list(self):
         self.count = self.count + 1
+        mute_num = MUTE_NUM
+        if (self.count - self.last_max_count)%100 == 0:
+            mute_num = MUTE_NUM * 2
         self.sort_list()
         max_count = len(self.person_list)
         parents_list = self.person_list[0:FILTER_COUNT]
@@ -58,7 +64,7 @@ class Team:
         ret = []
         for i in range(max_count):
             parents = tool.pick_item_in_list(parents_list,2)
-            son = parents[0].create_son(parents[1],MUTE_NUM)
+            son = parents[0].create_son(parents[1],mute_num)
             son.set_index(i)
             ret.append(son)
         self.person_list = ret
