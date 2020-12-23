@@ -21,10 +21,10 @@ class Main:
     
     def cmd(self,split_list):
         cmd = split_list[0]
-        if cmd == "NET_RUN": #[cmd,index,d1...d7]
-            self.net_run(data)
-        elif cmd == "CREAT":  #[cmd,index]
-            self.create_net(data[1])
+        if cmd == CMD["NET_MOVE"]: #[cmd,index,d1...d7]
+            self.net_run(split_list)
+        elif cmd == CMD["CREATE"]:  #[cmd,index]
+            self.create_net(split_list[1])
         
 
     def net_run(self,data):
