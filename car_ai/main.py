@@ -2,6 +2,7 @@ import numpy as np
 from socket_link  import *
 from network import *
 from config import *
+import copy
 
 class Main:
     net_list = {}
@@ -30,8 +31,14 @@ class Main:
         elif cmd == CMD["CHOOSE_NEXT"]:#[cmd,index1...indexN]
             self.create_next_net(split_list)
 
-    def create_next_net(self):
-        
+    def create_next_net(self,split_list):
+        copy_list = []
+        for index in range(1,len(split_list)):
+            id = split_list[index]
+            item = copy.deepcopy(self.net_list[id])
+            copy_list.append(item)
+        self.clear()
+        print("create_next ",split_list)
 
     def clear(self):
         print("========> clear")
