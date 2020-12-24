@@ -32,13 +32,16 @@ class Main:
             self.create_next_net(split_list)
 
     def create_next_net(self,split_list):
+        print("create_next ",split_list)
         copy_list = []
         for index in range(1,len(split_list)):
             id = split_list[index]
             item = copy.deepcopy(self.net_list[id])
             copy_list.append(item)
         self.clear()
-        print("create_next ",split_list)
+        copy_list[0].mix_net_with(copy_list[1])
+        
+    
 
     def clear(self):
         print("========> clear")

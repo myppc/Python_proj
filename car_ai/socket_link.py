@@ -31,7 +31,7 @@ class socket_server:
     def start_listener(self):
         self._socket.listen()
         self._connect, addr = self._socket.accept()
-        self._connect.settimeout(10)
+        self._connect.settimeout(60)
         print(self._connect)
         print('连接地址：', addr)
         self.start_receive()
