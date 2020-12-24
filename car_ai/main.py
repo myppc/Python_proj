@@ -4,20 +4,20 @@ from network import *
 from config import *
 
 class Main:
+    net_list = {}
     def __init__(self):
+        self.net_list = {}
         self.socket = socket_server()
         self.socket.set_receive_data_call_back(self.data_filter)
         self.socket.start_listener()
-        self.net_list = {}
+        
 
     def data_filter(self,data):
         msg = str(data)
-        ret = self.cut_str(msg)
-        ret = ret[-1]
-        if ret == None:
-            return
-        split_list = ret.split(',')
-        self.cmd(split_list)
+        ret = self.cut_str(msg,[])
+        for item in ret:
+            split_list = item.split(',')
+            self.cmd(split_list)
     
     def cmd(self,split_list):
         cmd = split_list[0]
@@ -25,10 +25,22 @@ class Main:
             self.net_run(split_list)
         elif cmd == CMD["CREATE"]:  #[cmd,index]
             self.create_net(split_list[1])
+        elif cmd == CMD["CLEAR"]:#[cmd]
+            self.clear()
+        elif cmd == CMD["CHOOSE_NEXT"]:#[cmd,index1...indexN]
+            self.create_next_net(split_list)
+
+    def create_next_net(self):
         
+
+    def clear(self):
+        print("========> clear")
+        self.net_list = {}
 
     def net_run(self,data):
         index = data[1]
+        if not index in self.net_list:
+            return
         net = self.net_list[index]
         if net == None:
             return
@@ -37,10 +49,10 @@ class Main:
             list.append(float(data[index]))
         
         dir_ret,speed_ret = net.feedforward(list)
-        msg = "s"+ CMD["CONTROL"]+"," + index+"," + str(dir_ret)+","+str(speed_ret) + "e"
+        msg = "s"+ CMD["CONTROL"]+"," + str(data[1])+"," + str(dir_ret)+","+str(speed_ret) + "e"
         self.socket.sendMsg(msg)
 
-    def cut_str(self,msg,ret = []):
+    def cut_str(self,msg,ret):
         s_pos = msg.find('s')
         if s_pos == -1:
             return ret;

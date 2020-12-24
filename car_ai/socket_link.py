@@ -12,14 +12,14 @@ class socket_server:
     def check_recv(self):
         count = 0
         while True:
-
+            data = None
             try:
                 data = self._connect.recv(1024 * 1024 *3)
             except BlockingIOError as e:
                 data = None
             if data:
                 if self._get_data_call_back:
-                    self._get_data_call_back(data) 
+                    self._get_data_call_back(data.decode()) 
             time.sleep(0.01)
             count += 1
 
@@ -44,5 +44,5 @@ class socket_server:
         self._get_data_call_back = call
 
     def sendMsg(self,msg):
-        self._connect.send(msg.encode()))
+        self._connect.send(msg.encode())
 
