@@ -70,7 +70,7 @@ class NetWork:
             
             new_biases1,new_biases2 = self.mute_b(new_biases1,new_biases2)
             new_weights1,new_weights2 = self.mute_w(new_weights1,new_weights2)
-
+            
             child1.append((info[0],new_weights1,new_biases1))
             child2.append((info[0],new_weights2,new_biases2))
 
@@ -79,14 +79,13 @@ class NetWork:
         
         new_w1 = [np.array(item[1],dtype=object) for item in child1]
         new_w2 = [np.array(item[1],dtype=object) for item in child2]
-
         net_child1 = NetWork(NET_INIT,new_b1,new_w1)
         net_child2 = NetWork(NET_INIT,new_b2,new_w2)
         return net_child1,net_child2
 
     def mute_w(self,new_weights1,new_weights2):
         for index in range(W_MUTE_COUNT): 
-            if random.randint(0,100) < MUTE_PER:
+            if random.randint(0,100) < 100:
                 mute_index = random.randint(0,len(new_weights1) -1)
                 mute_dir = random.randint(0,100) -50
                 if mute_dir == 0:
@@ -97,6 +96,7 @@ class NetWork:
                     value1 = value + mute_dir * B_MUTE_DIS * value
                     temp.append(value1)
                 new_weights1[mute_index] = temp
+                temp = []
                 for value in new_weights2[mute_index]:
                     value2 = value + mute_dir * B_MUTE_DIS * value
                     temp.append(value2)
