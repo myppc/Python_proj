@@ -11,6 +11,7 @@ class Main:
         self.socket = socket_server()
         self.socket.set_receive_data_call_back(self.data_filter)
         self.socket.start_listener()
+
         
 
     def data_filter(self,data):
@@ -34,17 +35,24 @@ class Main:
     def create_next_net(self,split_list):
         print("create_next ",split_list)
         copy_list = []
+        
         for index in range(1,len(split_list)):
             id = split_list[index]
             item = copy.deepcopy(self.net_list[id])
             copy_list.append(item)
         self.clear()
-        copy_list[0].mix_net_with(copy_list[1])
+        parent_index_list = np.random.randint(len(copy_list),size = (int(CAR_NUM/2),2))
+        count = 0
+        for item in parent_index_list:
+            child1,child2 = copy_list[item[0]].mix_net_with(copy_list[item[1]])
+            self.net_list[str(count)] = child1
+            count = count + 1
+            self.net_list[str(count)] = child2
+            count = count + 1
+        msg = "s"+ CMD["NEXT_READY"]+ "e"
+        self.socket.sendMsg(msg)
         
-    
-
     def clear(self):
-        print("========> clear")
         self.net_list = {}
 
     def net_run(self,data):

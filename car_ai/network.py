@@ -1,6 +1,7 @@
 import numpy as np
 from config import *
 import random
+import math
 
 class NetWork:
     def __init__(self, sizes,b = None,w = None):
@@ -66,18 +67,69 @@ class NetWork:
 
             new_biases1 = b_list1[:fliter_num]+b_list2[fliter_num:]
             new_biases2 = b_list1[fliter_num:]+b_list2[:fliter_num]
+            
+            new_biases1,new_biases2 = self.mute_b(new_biases1,new_biases2)
+            new_weights1,new_weights2 = self.mute_w(new_weights1,new_weights2)
+
             child1.append((info[0],new_weights1,new_biases1))
             child2.append((info[0],new_weights2,new_biases2))
 
         new_b1 = [np.array(item[2]) for item in child1]
         new_b2 = [np.array(item[2]) for item in child2]
         
-        new_w1 = [np.array(item[1]) for item in child1]
-        new_w2 = [np.array(item[1]) for item in child2]
+        new_w1 = [np.array(item[1],dtype=object) for item in child1]
+        new_w2 = [np.array(item[1],dtype=object) for item in child2]
 
         net_child1 = NetWork(NET_INIT,new_b1,new_w1)
         net_child2 = NetWork(NET_INIT,new_b2,new_w2)
         return net_child1,net_child2
+
+    def mute_w(self,new_weights1,new_weights2):
+        for index in range(W_MUTE_COUNT): 
+            if random.randint(0,100) < MUTE_PER:
+                mute_index = random.randint(0,len(new_weights1) -1)
+                mute_dir = random.randint(0,100) -50
+                if mute_dir == 0:
+                    mute_dir = 1
+                mute_dir = mute_dir/abs(mute_dir)
+                temp = []
+                for value in new_weights1[mute_index]:
+                    value1 = value + mute_dir * B_MUTE_DIS * value
+                    temp.append(value1)
+                new_weights1[mute_index] = temp
+                for value in new_weights2[mute_index]:
+                    value2 = value + mute_dir * B_MUTE_DIS * value
+                    temp.append(value2)
+                new_weights2[mute_index] = temp
+        return new_weights1,new_weights2
+                # value1 = new_biases1[mute_index] + mute_dir * B_MUTE_DIS * new_biases1[mute_index]
+                # new_biases1[mute_index] = value
+                # value2 = new_biases2[mute_index] + mute_dir * B_MUTE_DIS * new_biases2[mute_index]
+                # new_biases2[mute_index] = value
+
+    def mute_b(self,new_biases1,new_biases2):
+        for index in range(B_MUTE_COUNT): 
+            if random.randint(0,100) < MUTE_PER:
+                mute_index = random.randint(0,len(new_biases1) -1)
+                mute_dir = random.randint(0,100) -50
+                if mute_dir == 0:
+                    mute_dir = 1
+                mute_dir = mute_dir/abs(mute_dir)
+                value_list1 = new_biases1[mute_index]
+                temp = []
+                for value in value_list1:
+                    value = value + mute_dir * B_MUTE_DIS * value
+                    temp.append(value)
+                new_biases1[mute_index] = temp
+                
+                value_list2 = new_biases2[mute_index]
+                temp = []
+                for value  in value_list2:
+                    value = value + mute_dir * B_MUTE_DIS * value
+                    temp.append(value)
+                new_biases2[mute_index] = temp
+
+        return new_biases1,new_biases2
 
 # if __name__ == '__main__':
 #     net = NetWork([7,10,5,2])
