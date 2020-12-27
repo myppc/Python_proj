@@ -17,6 +17,7 @@ class NetWork:
             self.weights = w
 
     def sigmoid(self,z):
+        z = np.array(z,dtype = np.float64)
         ret = 1.0/(1.0+np.exp(-z))
         return ret
 
