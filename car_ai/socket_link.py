@@ -14,7 +14,7 @@ class socket_server:
         while True:
             data = None
             try:
-                data = self._connect.recv(1024 * 1024 *3)
+                data = self._connect.recv(1024 * 1024 *10)
             except BlockingIOError as e:
                 data = None
             if data:

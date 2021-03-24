@@ -1,3 +1,4 @@
+
 import numpy as np
 from socket_link  import *
 from network import *
@@ -6,6 +7,7 @@ import copy
 
 class Main:
     net_list = {}
+    last_copy = []
     def __init__(self):
         self.net_list = {}
         self.socket = socket_server()
@@ -36,10 +38,14 @@ class Main:
         print("create_next ",split_list)
         copy_list = []
         
-        for index in range(1,len(split_list)):
-            id = split_list[index]
-            item = copy.deepcopy(self.net_list[id])
-            copy_list.append(item)
+        if split_list[1] == '':
+            copy_list = self.last_copy
+        else:
+            for index in range(1,len(split_list)):
+                id = split_list[index]
+                item = copy.deepcopy(self.net_list[id])
+                copy_list.append(item)
+            self.last_copy = copy_list
         self.clear()
         parent_index_list = np.random.randint(len(copy_list),size = (int(CAR_NUM/2),2))
         count = 0
@@ -65,7 +71,6 @@ class Main:
         list = []
         for index in range(2,len(data)):
             list.append(float(data[index]))
-        
         dir_ret,speed_ret = net.feedforward(list)
         msg = "s"+ CMD["CONTROL"]+"," + str(data[1])+"," + str(dir_ret)+","+str(speed_ret) + "e"
         self.socket.sendMsg(msg)

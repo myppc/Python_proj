@@ -36,10 +36,8 @@ class NetWork:
         else:
             dir_ret = 1
 
-        if speed_ret < DIS[0]:
+        if speed_ret < SPEED_DIS:
             speed_ret = -1
-        elif speed_ret < DIS[1]:
-            speed_ret = 0
         else:
             speed_ret = 1
 
@@ -86,7 +84,7 @@ class NetWork:
 
     def mute_w(self,new_weights1,new_weights2):
         for index in range(W_MUTE_COUNT): 
-            if random.randint(0,100) < 100:
+            if random.randint(0,100) < MUTE_PER:
                 mute_index = random.randint(0,len(new_weights1) -1)
                 mute_dir = random.randint(0,100) -50
                 if mute_dir == 0:
@@ -94,12 +92,12 @@ class NetWork:
                 mute_dir = mute_dir/abs(mute_dir)
                 temp = []
                 for value in new_weights1[mute_index]:
-                    value1 = value + mute_dir * B_MUTE_DIS * value
+                    value1 = value + mute_dir * random.uniform(0.1, B_MUTE_DIS) * value
                     temp.append(value1)
                 new_weights1[mute_index] = temp
                 temp = []
                 for value in new_weights2[mute_index]:
-                    value2 = value + mute_dir * B_MUTE_DIS * value
+                    value2 = value + mute_dir * random.uniform(0.1, B_MUTE_DIS) * value
                     temp.append(value2)
                 new_weights2[mute_index] = temp
         return new_weights1,new_weights2
@@ -119,14 +117,14 @@ class NetWork:
                 value_list1 = new_biases1[mute_index]
                 temp = []
                 for value in value_list1:
-                    value = value + mute_dir * B_MUTE_DIS * value
+                    value = value + mute_dir * random.uniform(0.1, B_MUTE_DIS) * value
                     temp.append(value)
                 new_biases1[mute_index] = temp
                 
                 value_list2 = new_biases2[mute_index]
                 temp = []
                 for value  in value_list2:
-                    value = value + mute_dir * B_MUTE_DIS * value
+                    value = value + mute_dir * random.uniform(0.1, B_MUTE_DIS) * value
                     temp.append(value)
                 new_biases2[mute_index] = temp
 
