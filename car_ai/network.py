@@ -53,7 +53,7 @@ class NetWork:
         child1 = []
         child2 = []
         for info in info_list:
-            fliter_num = random.randint(1,info[1]-1)
+            fliter_num = math.floor(info[1]/2)
             target_list1 = self.weights[info[0]].tolist()
             target_list2 = other.weights[info[0]].tolist()
 
@@ -66,7 +66,6 @@ class NetWork:
 
             new_biases1 = b_list1[:fliter_num]+b_list2[fliter_num:]
             new_biases2 = b_list1[fliter_num:]+b_list2[:fliter_num]
-            
             new_biases1,new_biases2 = self.mute_b(new_biases1,new_biases2)
             new_weights1,new_weights2 = self.mute_w(new_weights1,new_weights2)
             
@@ -117,7 +116,7 @@ class NetWork:
                 value_list1 = new_biases1[mute_index]
                 temp = []
                 for value in value_list1:
-                    value = value + mute_dir * random.uniform(0.1, B_MUTE_DIS) * value
+                    value = value + mute_dir * random.uniform(0.01, B_MUTE_DIS) * value
                     temp.append(value)
                 new_biases1[mute_index] = temp
                 
