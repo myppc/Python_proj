@@ -1,0 +1,2 @@
+python picture_replace.py
+pause

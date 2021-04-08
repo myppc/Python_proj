@@ -1,0 +1,2 @@
+python lua_lang_check.py
+pause
