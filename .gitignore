@@ -124,11 +124,10 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
 # Pyre type checker
 ./car_ai/CarAi_Proj/pyre/
 ./car_ai/CarAi_Proj/idea/
-./car_ai/CarAi_Proj/Library/
+./car_ai/CarAi_Proj/Library
 ./car_ai/CarAi_Proj/Logs/
 ./car_ai/CarAi_Proj/obj/
 ./car_ai/CarAi_Proj/Temp/
