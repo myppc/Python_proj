@@ -113,4 +113,7 @@ white_list = [
 'try_knife_assembly\\try_knife_reworld_class.lua',
 'ui_manager.lua',
 'guide_city_battle\\moduiles_guide_city_battle_config.lua',
+'activity_fish\\activity_fishing_class.lua',
+'master\\master_equipment_overview_new.lua',
+'city_battle\\module_city_battle_relive_ui_class.lua',
 ]
