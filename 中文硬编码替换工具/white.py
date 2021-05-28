@@ -116,4 +116,5 @@ white_list = [
 'activity_fish\\activity_fishing_class.lua',
 'master\\master_equipment_overview_new.lua',
 'city_battle\\module_city_battle_relive_ui_class.lua',
+'city_battle\\moduiles_formation_citybattle.lua',
 ]

@@ -2,26 +2,6 @@ nfs_common_kelingqv_wenzi:
 D:\Work\git\Assets\Modules\Common\Textures\nfs_comm\common\nfs_common_kelingqv_wenzi.png
 D:\Work\git\Assets\Modules\Effects\Textures\nfs_common_kelingqv_wenzi.png
 
-nfs_shangcheng_tuijian:
-D:\Work\git\Assets\Modules\Shop\Textures\Elements\nfs_shangcheng_tuijian.png
-D:\Work\git\Assets\Modules\Shop\Textures\new\nfs_shangcheng_tuijian.png
-
-nfs_gerenziliao_geren:
-D:\Work\git\Assets\Modules\CommonWaveTab\Textures\nfs_gerenziliao_geren.png
-D:\Work\git\Assets\Modules\PlayerInfo\Textures\Element\nfs_gerenziliao_geren.png
-
-nfs_gerenziliao_gerenxuanzhong:
-D:\Work\git\Assets\Modules\CommonWaveTab\Textures\nfs_gerenziliao_gerenxuanzhong.png
-D:\Work\git\Assets\Modules\PlayerInfo\Textures\Element\nfs_gerenziliao_gerenxuanzhong.png
-
-nfs_gerenziliao_shezhi:
-D:\Work\git\Assets\Modules\CommonWaveTab\Textures\nfs_gerenziliao_shezhi.png
-D:\Work\git\Assets\Modules\PlayerInfo\Textures\Element\nfs_gerenziliao_shezhi.png
-
-nfs_gerenziliao_shezhixuanzhong:
-D:\Work\git\Assets\Modules\CommonWaveTab\Textures\nfs_gerenziliao_shezhixuanzhong.png
-D:\Work\git\Assets\Modules\PlayerInfo\Textures\Element\nfs_gerenziliao_shezhixuanzhong.png
-
 nfs_text_tedian_xuanchuan:
 D:\Work\git\Assets\Modules\ActivityIndult\Textures\nfs_text_tedian_xuanchuan.png
 D:\Work\git\Assets\Modules\Effects\Textures\nfs_text_tedian_xuanchuan.png

@@ -44,7 +44,7 @@ def read_recharge(fliename):
         item.append("zh_TW|"+name+"|"+desc)
 
         price = sheet.row_values(index)[14]
-        price_str = "US;" + str(price)+";TW;"+ str(4*price)
+        price_str = "US;" + str(price)+";TW;"+ str(format(29*price, '.2f'))+";HK;"+str(format(7.8*price, '.2f'))+";MO;"+ str(format(8*price, '.2f'))
         item.append(price_str)
         add_list.append(item)
         count = count + 1
@@ -63,7 +63,7 @@ def write_excel(recharge_info):
         worksheet.write(0, 1, 'ProductType')
         worksheet.write(0, 2, 'Locale Title Description')
         worksheet.write(0, 3, 'Price')
-        count = 0
+        count = 1
         for item in add_list:
             count = count + 1
             for index in range(len(item)):

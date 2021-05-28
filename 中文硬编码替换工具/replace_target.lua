@@ -1,5 +1,1 @@
-gs_all_string_cn["auto_331"] = "复活上限:%s/%s"
-gs_all_string_cn["auto_332"] = "已超过复活次数上限"
-gs_all_string_cn["auto_333"] = "今日已膜拜过天下第一！"
-gs_all_string_cn["auto_334"] = "报名成功！"
-gs_all_string_cn["auto_335"] = "矿点"
+gs_all_string_cn["auto_336"] = "没有可出阵武将"
