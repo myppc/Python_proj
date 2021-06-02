@@ -1,95 +1,29 @@
-{"date": "2017-10-24", "act": "BUY", "trading_vol": 1199.8080307150856, "hold_stock": 1199.8080307150856, "trading_price": 1.2502, "cur_money": 8500, "all_money": 10000.0}
-{"date": "2017-10-31", "act": "BUY", "trading_vol": 991.0610182666148, "hold_stock": 2190.8690489817004, "trading_price": 1.2865, "cur_money": 7225, "all_money": 10043.553031514957}
-{"date": "2017-11-07", "act": "BUY", "trading_vol": 838.0407026232299, "hold_stock": 3028.9097516049305, "trading_price": 1.2923, "cur_money": 6142, "all_money": 10056.260071999051}
-{"date": "2017-11-14", "act": "BUY", "trading_vol": 679.4540759867208, "hold_stock": 3708.3638275916514, "trading_price": 1.3555, "cur_money": 5221, "all_money": 10247.687168300483}
-{"date": "2017-11-21", "act": "BUY", "trading_vol": 570.6997084548104, "hold_stock": 4279.063536046462, "trading_price": 1.372, "cur_money": 4438, "all_money": 10308.875171455747}
-{"date": "2017-11-28", "act": "BUY", "trading_vol": 1022.7447364376826, "hold_stock": 5301.808272484144, "trading_price": 1.3014, "cur_money": 3107, "all_money": 10006.773285810865}
-{"date": "2017-12-05", "act": "BUY", "trading_vol": 759.1431131383888, "hold_stock": 6060.951385622533, "trading_price": 1.2277, "cur_money": 2175, "all_money": 9616.030016128785}
-{"date": "2017-12-12", "act": "BUY", "trading_vol": 530.8149474883986, "hold_stock": 6591.766333110932, "trading_price": 1.2283, "cur_money": 1523, "all_money": 9619.666586960157}
-{"date": "2017-12-19", "act": "BUY", "trading_vol": 375.0308413520849, "hold_stock": 6966.797174463017, "trading_price": 1.2159, "cur_money": 1067, "all_money": 9537.928684429582}
-{"date": "2017-12-26", "act": "BUY", "trading_vol": 262.27358413244815, "hold_stock": 7229.070758595465, "trading_price": 1.2201, "cur_money": 747, "all_money": 9567.189232562327}
-{"date": "2018-01-03", "act": "BUY", "trading_vol": 179.32911696421422, "hold_stock": 7408.3998755596795, "trading_price": 1.2491, "cur_money": 523, "all_money": 9776.832284561597}
-{"date": "2018-01-10", "act": "BUY", "trading_vol": 123.73096446700508, "hold_stock": 7532.130840026684, "trading_price": 1.2608, "cur_money": 367, "all_money": 9863.510563105643}
-{"date": "2018-01-17", "act": "BUY", "trading_vol": 88.52406244970224, "hold_stock": 7620.654902476386, "trading_price": 1.2426, "cur_money": 257, "all_money": 9726.425781817157}
-{"date": "2018-01-24", "act": "BUY", "trading_vol": 60.85032400821874, "hold_stock": 7681.505226484605, "trading_price": 1.2654, "cur_money": 180, "all_money": 9900.17671359362}
-{"date": "2018-01-31", "act": "BUY", "trading_vol": 43.67871875758311, "hold_stock": 7725.183945242188, "trading_price": 1.2363, "cur_money": 126, "all_money": 9676.644911502917}
-{"date": "2018-02-07", "act": "BUY", "trading_vol": 31.656399726214918, "hold_stock": 7756.840344968403, "trading_price": 1.1688, "cur_money": 89, "all_money": 9155.19499519907}
-{"date": "2018-02-14", "act": "BUY", "trading_vol": 22.514721163837894, "hold_stock": 7779.355066132241, "trading_price": 1.1548, "cur_money": 63, "all_money": 9046.599230369511}
-{"date": "2018-02-23", "act": "BUY", "trading_vol": 15.196285352469395, "hold_stock": 7794.55135148471, "trading_price": 1.1845, "cur_money": 45, "all_money": 9277.64607583364}
-{"date": "2018-03-02", "act": "BUY", "trading_vol": 10.518650376244032, "hold_stock": 7805.070001860954, "trading_price": 1.2359, "cur_money": 32, "all_money": 9678.286015299953}
-{"date": "2018-08-07", "act": "SELL", "trading_vol": 7805.070001860954, "hold_stock": 0, "trading_price": 1.1116, "cur_money": 8708.115814068637, "all_money": 8708.115814068637}
-{"date": "2018-08-08", "act": "BUY", "trading_vol": 1197.8354581307897, "hold_stock": 1197.8354581307897, "trading_price": 1.0903, "cur_money": 7402.115814068637, "all_money": 8708.115814068637}
-{"date": "2018-08-15", "act": "BUY", "trading_vol": 992.4892703862661, "hold_stock": 2190.3247285170555, "trading_price": 1.1184, "cur_money": 6292.115814068637, "all_money": 8741.77499044211}
-{"date": "2018-08-22", "act": "BUY", "trading_vol": 855.9498956158665, "hold_stock": 3046.274624132922, "trading_price": 1.1017, "cur_money": 5349.115814068637, "all_money": 8705.196567475876}
-{"date": "2018-08-29", "act": "BUY", "trading_vol": 699.3372863620509, "hold_stock": 3745.611910494973, "trading_price": 1.1468, "cur_money": 4547.115814068637, "all_money": 8842.583553024273}
-{"date": "2018-09-05", "act": "BUY", "trading_vol": 601.6762240846934, "hold_stock": 4347.288134579667, "trading_price": 1.1335, "cur_money": 3865.1158140686366, "all_money": 8792.766914614689}
-{"date": "2018-09-12", "act": "BUY", "trading_vol": 1061.5497343835866, "hold_stock": 5408.837868963254, "trading_price": 1.0918, "cur_money": 2706.1158140686366, "all_money": 8611.484999402717}
-{"date": "2018-09-19", "act": "BUY", "trading_vol": 735.3341191404479, "hold_stock": 6144.171988103702, "trading_price": 1.1029, "cur_money": 1895.1158140686366, "all_money": 8671.523099748209}
-{"date": "2018-09-26", "act": "BUY", "trading_vol": 253.39043540328336, "hold_stock": 6397.5624235069845, "trading_price": 1.1208, "cur_money": 1611.1158140686366, "all_money": 8781.503778335264}
-{"date": "2018-10-09", "act": "BUY", "trading_vol": 451.6129032258065, "hold_stock": 6849.175326732791, "trading_price": 1.0695, "cur_money": 1128.1158140686366, "all_money": 8453.308826009357}
-{"date": "2018-10-16", "act": "BUY", "trading_vol": 339.5278754394776, "hold_stock": 7188.703202172269, "trading_price": 0.9955, "cur_money": 790.1158140686366, "all_money": 7946.469851831131}
-{"date": "2018-10-23", "act": "BUY", "trading_vol": 221.9932559010865, "hold_stock": 7410.696458073356, "trading_price": 1.0676, "cur_money": 553.1158140686366, "all_money": 8464.775352707751}
-{"date": "2018-10-30", "act": "BUY", "trading_vol": 158.27338129496403, "hold_stock": 7568.969839368319, "trading_price": 1.0425, "cur_money": 388.1158140686366, "all_money": 8278.76687161011}
-{"date": "2018-11-06", "act": "BUY", "trading_vol": 106.31472825588855, "hold_stock": 7675.284567624208, "trading_price": 1.0911, "cur_money": 272.1158140686366, "all_money": 8646.61880580341}
-{"date": "2018-11-13", "act": "BUY", "trading_vol": 36.003600360036, "hold_stock": 7711.288167984244, "trading_price": 1.111, "cur_money": 232.1158140686366, "all_money": 8799.356968699132}
-{"date": "2018-11-20", "act": "BUY", "trading_vol": 30.886627906976745, "hold_stock": 7742.174795891221, "trading_price": 1.1008, "cur_money": 198.1158140686366, "all_money": 8720.701829385693}
-{"date": "2018-11-27", "act": "BUY", "trading_vol": 55.25896787487121, "hold_stock": 7797.433763766092, "trading_price": 1.0677, "cur_money": 139.1158140686366, "all_money": 8464.435843641693}
-{"date": "2018-12-04", "act": "BUY", "trading_vol": 17.995321216483717, "hold_stock": 7815.429084982576, "trading_price": 1.1114, "cur_money": 119.11581406863661, "all_money": 8805.18369911827}
-{"date": "2018-12-11", "act": "BUY", "trading_vol": 31.978072179077202, "hold_stock": 7847.407157161653, "trading_price": 1.0945, "cur_money": 84.11581406863661, "all_money": 8673.102947582067}
-{"date": "2018-12-18", "act": "BUY", "trading_vol": 23.549359457422756, "hold_stock": 7870.956516619076, "trading_price": 1.0616, "cur_money": 59.11581406863661, "all_money": 8414.923252111448}
-{"date": "2018-12-25", "act": "BUY", "trading_vol": 16.272614147602184, "hold_stock": 7887.229130766678, "trading_price": 1.0447, "cur_money": 42.11581406863661, "all_money": 8281.904086980585}
-{"date": "2019-01-02", "act": "BUY", "trading_vol": 11.752032122221136, "hold_stock": 7898.981162888899, "trading_price": 1.0211, "cur_money": 30.11581406863661, "all_money": 8095.765479494491}
-{"date": "2019-08-20", "act": "SELL", "trading_vol": 7898.981162888899, "hold_stock": 0, "trading_price": 1.4526, "cur_money": 11504.17585128105, "all_money": 11504.17585128105}
-{"date": "2019-08-21", "act": "BUY", "trading_vol": 1185.8930290114122, "hold_stock": 1185.8930290114122, "trading_price": 1.4546, "cur_money": 9779.17585128105, "all_money": 11504.17585128105}
-{"date": "2019-08-28", "act": "BUY", "trading_vol": 2075.725406935598, "hold_stock": 3261.6184359470103, "trading_price": 1.413, "cur_money": 6846.17585128105, "all_money": 11454.842701274176}
-{"date": "2019-09-04", "act": "BUY", "trading_vol": 708.5635359116022, "hold_stock": 3970.1819718586125, "trading_price": 1.448, "cur_money": 5820.17585128105, "all_money": 11568.99934653232}
-{"date": "2019-09-11", "act": "BUY", "trading_vol": 589.5860066184913, "hold_stock": 4559.7679784771035, "trading_price": 1.4807, "cur_money": 4947.17585128105, "all_money": 11698.824297012097}
-{"date": "2019-09-18", "act": "BUY", "trading_vol": 502.23365371598754, "hold_stock": 5062.001632193091, "trading_price": 1.4774, "cur_money": 4205.17585128105, "all_money": 11683.777062683122}
-{"date": "2019-09-25", "act": "BUY", "trading_vol": 424.09962975429147, "hold_stock": 5486.101261947382, "trading_price": 1.4855, "cur_money": 3575.17585128105, "all_money": 11724.779275903886}
-{"date": "2019-10-09", "act": "BUY", "trading_vol": 367.19873946701375, "hold_stock": 5853.300001414396, "trading_price": 1.4597, "cur_money": 3039.17585128105, "all_money": 11583.237863345645}
-{"date": "2019-10-16", "act": "BUY", "trading_vol": 304.3478260869565, "hold_stock": 6157.647827501352, "trading_price": 1.495, "cur_money": 2584.17585128105, "all_money": 11789.859353395572}
-{"date": "2019-10-23", "act": "BUY", "trading_vol": 261.23936816524906, "hold_stock": 6418.887195666602, "trading_price": 1.4814, "cur_money": 2197.17585128105, "all_money": 11706.115342941554}
-{"date": "2019-10-30", "act": "BUY", "trading_vol": 226.64645907963626, "hold_stock": 6645.5336547462375, "trading_price": 1.4516, "cur_money": 1868.1758512810502, "all_money": 11514.832504510689}
-{"date": "2019-11-06", "act": "BUY", "trading_vol": 188.39994617144396, "hold_stock": 6833.933600917681, "trading_price": 1.4862, "cur_money": 1588.1758512810502, "all_money": 11744.767968964909}
-{"date": "2019-11-13", "act": "BUY", "trading_vol": 160.40978634494843, "hold_stock": 6994.34338726263, "trading_price": 1.4837, "cur_money": 1350.1758512810502, "all_money": 11727.683134962615}
-{"date": "2019-11-20", "act": "BUY", "trading_vol": 132.80736357659435, "hold_stock": 7127.150750839224, "trading_price": 1.521, "cur_money": 1148.1758512810502, "all_money": 11988.572143307509}
-{"date": "2019-11-27", "act": "BUY", "trading_vol": 115.82491582491582, "hold_stock": 7242.97566666414, "trading_price": 1.485, "cur_money": 976.1758512810502, "all_money": 11731.994716277299}
-{"date": "2019-12-04", "act": "BUY", "trading_vol": 98.82225531338838, "hold_stock": 7341.797921977528, "trading_price": 1.4774, "cur_money": 830.1758512810502, "all_money": 11676.94810121065}
-{"date": "2019-12-11", "act": "BUY", "trading_vol": 81.83738120380147, "hold_stock": 7423.63530318133, "trading_price": 1.5152, "cur_money": 706.1758512810502, "all_money": 11954.4680626614}
-{"date": "2019-12-18", "act": "BUY", "trading_vol": 66.55257653546302, "hold_stock": 7490.187879716793, "trading_price": 1.5777, "cur_money": 601.1758512810502, "all_money": 12418.445269110234}
-{"date": "2019-12-25", "act": "BUY", "trading_vol": 57.074005961062845, "hold_stock": 7547.261885677855, "trading_price": 1.5769, "cur_money": 511.1758512810502, "all_money": 12412.45311880646}
-{"date": "2020-01-02", "act": "BUY", "trading_vol": 46.468969734026295, "hold_stock": 7593.730855411882, "trading_price": 1.6355, "cur_money": 435.1758512810502, "all_money": 12854.722665307183}
-{"date": "2020-01-09", "act": "BUY", "trading_vol": 39.23462304581397, "hold_stock": 7632.965478457696, "trading_price": 1.6567, "cur_money": 370.1758512810502, "all_money": 13015.709759441916}
-{"date": "2020-01-16", "act": "BUY", "trading_vol": 32.98153034300792, "hold_stock": 7665.947008800704, "trading_price": 1.6676, "cur_money": 315.1758512810502, "all_money": 13098.909083157103}
-{"date": "2020-01-23", "act": "BUY", "trading_vol": 28.547133138969873, "hold_stock": 7694.494141939674, "trading_price": 1.6464, "cur_money": 268.1758512810502, "all_money": 12936.39100657053}
-{"date": "2020-02-04", "act": "BUY", "trading_vol": 24.906600249066003, "hold_stock": 7719.40074218874, "trading_price": 1.606, "cur_money": 228.1758512810502, "all_money": 12625.533443236167}
-{"date": "2020-02-11", "act": "BUY", "trading_vol": 20.14934218324049, "hold_stock": 7739.55008437198, "trading_price": 1.6874, "cur_money": 194.1758512810502, "all_money": 13253.89266365033}
-{"date": "2020-02-18", "act": "BUY", "trading_vol": 16.371231794061195, "hold_stock": 7755.921316166041, "trading_price": 1.7714, "cur_money": 165.1758512810502, "all_money": 13904.014870737576}
-{"date": "2020-02-25", "act": "BUY", "trading_vol": 13.110455588331694, "hold_stock": 7769.031771754373, "trading_price": 1.8306, "cur_money": 141.1758512810502, "all_money": 14363.165412654605}
-{"date": "2020-03-03", "act": "BUY", "trading_vol": 11.920304251575184, "hold_stock": 7780.952076005949, "trading_price": 1.7617, "cur_money": 120.1758512810502, "all_money": 13827.87912358073}
-{"date": "2020-03-10", "act": "BUY", "trading_vol": 10.48156990624818, "hold_stock": 7791.433645912197, "trading_price": 1.7173, "cur_money": 102.1758512810502, "all_money": 13482.404851406067}
-{"date": "2020-03-17", "act": "BUY", "trading_vol": 9.683666881859265, "hold_stock": 7801.1173127940565, "trading_price": 1.549, "cur_money": 87.1758512810502, "all_money": 12171.106568799043}
-{"date": "2020-03-24", "act": "BUY", "trading_vol": 17.34489659773182, "hold_stock": 7818.462209391789, "trading_price": 1.499, "cur_money": 61.1758512810502, "all_money": 11781.050703159342}
-{"date": "2020-07-09", "act": "SELL", "trading_vol": 7818.462209391789, "hold_stock": 0, "trading_price": 1.9706, "cur_money": 15468.237481108508, "all_money": 15468.237481108508}
-{"date": "2020-07-10", "act": "BUY", "trading_vol": 1178.741997764455, "hold_stock": 1178.741997764455, "trading_price": 1.9682, "cur_money": 13148.237481108508, "all_money": 15468.237481108508}
-{"date": "2020-07-17", "act": "BUY", "trading_vol": 2085.9998942190723, "hold_stock": 3264.7418919835272, "trading_price": 1.8907, "cur_money": 9204.237481108508, "all_money": 15376.884976281763}
-{"date": "2020-07-24", "act": "BUY", "trading_vol": 747.8458787189076, "hold_stock": 4012.5877707024347, "trading_price": 1.8453, "cur_money": 7824.237481108508, "all_money": 15228.66569438571}
-{"date": "2020-07-31", "act": "BUY", "trading_vol": 593.7136204889406, "hold_stock": 4606.301391191375, "trading_price": 1.9757, "cur_money": 6651.237481108508, "all_money": 15751.907139685307}
-{"date": "2020-08-07", "act": "BUY", "trading_vol": 507.50827182489184, "hold_stock": 5113.809663016267, "trading_price": 1.9645, "cur_money": 5654.237481108508, "all_money": 15700.316564103965}
-{"date": "2020-08-14", "act": "BUY", "trading_vol": 876.0783098300532, "hold_stock": 5989.887972846321, "trading_price": 1.9359, "cur_money": 3958.2374811085083, "all_money": 15554.0616077417}
-{"date": "2020-08-21", "act": "BUY", "trading_vol": 623.3916285909354, "hold_stock": 6613.279601437256, "trading_price": 1.9041, "cur_money": 2771.2374811085083, "all_money": 15363.583170205187}
-{"date": "2020-08-28", "act": "BUY", "trading_vol": 210.75618302777917, "hold_stock": 6824.035784465035, "trading_price": 1.9691, "cur_money": 2356.2374811085083, "all_money": 15793.446344298609}
-{"date": "2020-09-04", "act": "BUY", "trading_vol": 180.17558187015106, "hold_stock": 7004.2113663351865, "trading_price": 1.9592, "cur_money": 2003.2374811085083, "all_money": 15725.888390032405}
-{"date": "2020-09-11", "act": "BUY", "trading_vol": 323.88663967611336, "hold_stock": 7328.0980060113, "trading_price": 1.8525, "cur_money": 1403.2374811085083, "all_money": 14978.539037244442}
-{"date": "2020-09-18", "act": "BUY", "trading_vol": 220.93634928984744, "hold_stock": 7549.034355301147, "trading_price": 1.901, "cur_money": 983.2374811085083, "all_money": 15333.95179053599}
-{"date": "2020-09-25", "act": "BUY", "trading_vol": 161.6094986807388, "hold_stock": 7710.6438539818855, "trading_price": 1.8192, "cur_money": 689.2374811085083, "all_money": 14716.440780272354}
-{"date": "2020-10-12", "act": "BUY", "trading_vol": 104.61100954702417, "hold_stock": 7815.2548635289095, "trading_price": 1.9692, "cur_money": 483.2374811085083, "all_money": 15873.037358369636}
-{"date": "2020-10-20", "act": "BUY", "trading_vol": 36.47046905075474, "hold_stock": 7851.725332579665, "trading_price": 1.9742, "cur_money": 411.2374811085083, "all_money": 15912.113632687282}
-{"date": "2020-10-27", "act": "BUY", "trading_vol": 63.424947145877375, "hold_stock": 7915.150279725542, "trading_price": 1.9393, "cur_money": 288.2374811085083, "all_money": 15638.088418580252}
-{"date": "2020-11-03", "act": "BUY", "trading_vol": 47.632234837995014, "hold_stock": 7962.782514563537, "trading_price": 1.8055, "cur_money": 202.2374811085083, "all_money": 14579.041311152976}
-{"date": "2020-11-10", "act": "BUY", "trading_vol": 32.04614645088928, "hold_stock": 7994.828661014426, "trading_price": 1.8723, "cur_money": 142.2374811085083, "all_money": 15110.955183125818}
-{"date": "2020-11-17", "act": "BUY", "trading_vol": 22.42751108025845, "hold_stock": 8017.256172094684, "trading_price": 1.8727, "cur_money": 100.23748110850829, "all_money": 15114.153114590225}
-{"date": "2020-11-24", "act": "BUY", "trading_vol": 15.83029919265474, "hold_stock": 8033.086471287339, "trading_price": 1.8951, "cur_money": 70.23748110850829, "all_money": 15293.739652845145}
-{"date": "2020-12-01", "act": "BUY", "trading_vol": 11.194626579241964, "hold_stock": 8044.281097866581, "trading_price": 1.8759, "cur_money": 49.23748110850829, "all_money": 15139.504392596427}
-{"date": "2020-12-08", "act": "BUY", "trading_vol": 7.399186089530152, "hold_stock": 8051.680283956111, "trading_price": 1.8921, "cur_money": 35.23748110850829, "all_money": 15269.821746381866}
-{"date": "2020-12-15", "act": "BUY", "trading_vol": 5.267871253226571, "hold_stock": 8056.948155209338, "trading_price": 1.8983, "cur_money": 25.23748110850829, "all_money": 15319.742164142397}
+{"date": "2017-11-24", "act": "BUY", "trading_vol": 1147.5786091347259, "hold_stock": 1147.5786091347259, "trading_price": 1.3071, "cur_money": 8500, "all_money": 10000.0, "index": 24}
+{"date": "2018-01-03", "act": "BUY", "trading_vol": 2041.4698582979743, "hold_stock": 3189.0484674327, "trading_price": 1.2491, "cur_money": 5950, "all_money": 9933.440440670185, "index": 52}
+{"date": "2018-03-01", "act": "BUY", "trading_vol": 1427.885769138469, "hold_stock": 4616.934236571169, "trading_price": 1.2501, "cur_money": 4165, "all_money": 9936.629489137618, "index": 88}
+{"date": "2018-03-08", "act": "BUY", "trading_vol": 1000.48061518744, "hold_stock": 5617.414851758609, "trading_price": 1.2484, "cur_money": 2916, "all_money": 9928.780700935447, "index": 93}
+{"date": "2018-07-25", "act": "BUY", "trading_vol": 731.5031804486106, "hold_stock": 6348.91803220722, "trading_price": 1.1948, "cur_money": 2042, "all_money": 9627.687264881188, "index": 188}
+{"date": "2018-08-29", "act": "BUY", "trading_vol": 533.658876874782, "hold_stock": 6882.576909082001, "trading_price": 1.1468, "cur_money": 1430, "all_money": 9322.93919933524, "index": 213}
+{"date": "2018-10-12", "act": "SELL", "trading_vol": 6882.576909082001, "hold_stock": 0, "trading_price": 1.0217, "cur_money": 8461.92882800908, "all_money": 8461.92882800908, "index": 239}
+{"date": "2018-11-29", "act": "BUY", "trading_vol": 1189.9849962490623, "hold_stock": 1189.9849962490623, "trading_price": 1.0664, "cur_money": 7192.9288280090805, "all_money": 8461.92882800908, "index": 273}
+{"date": "2019-02-19", "act": "BUY", "trading_vol": 896.3911525029105, "hold_stock": 2086.376148751973, "trading_price": 1.2026, "cur_money": 6114.9288280090805, "all_money": 8624.004784498204, "index": 325}
+{"date": "2019-02-26", "act": "BUY", "trading_vol": 707.9441056125994, "hold_stock": 2794.320254364572, "trading_price": 1.2953, "cur_money": 5197.9288280090805, "all_money": 8817.41185348751, "index": 330}
+{"date": "2019-03-05", "act": "BUY", "trading_vol": 587.4368448834929, "hold_stock": 3381.757099248065, "trading_price": 1.3261, "cur_money": 4418.9288280090805, "all_money": 8903.47691732194, "index": 335}
+{"date": "2019-03-12", "act": "BUY", "trading_vol": 473.36431891312117, "hold_stock": 3855.1214181611863, "trading_price": 1.3985, "cur_money": 3756.9288280090805, "all_money": 9148.3161313075, "index": 340}
+{"date": "2019-03-19", "act": "BUY", "trading_vol": 411.0089064096949, "hold_stock": 4266.130324570881, "trading_price": 1.3698, "cur_money": 3193.9288280090805, "all_money": 9037.674146606274, "index": 345}
+{"date": "2019-06-28", "act": "BUY", "trading_vol": 365.2028057334553, "hold_stock": 4631.333130304337, "trading_price": 1.3116, "cur_money": 2714.9288280090805, "all_money": 8789.38536171625, "index": 413}
+{"date": "2019-08-14", "act": "BUY", "trading_vol": 293.6084259125667, "hold_stock": 4924.941556216903, "trading_price": 1.3862, "cur_money": 2307.9288280090805, "all_money": 9134.882813236953, "index": 447}
+{"date": "2019-09-10", "act": "BUY", "trading_vol": 231.09804969275982, "hold_stock": 5156.039605909663, "trading_price": 1.4972, "cur_money": 1961.9288280090805, "all_money": 9681.551325977027, "index": 466}
+{"date": "2020-01-02", "act": "BUY", "trading_vol": 179.76154081320698, "hold_stock": 5335.80114672287, "trading_price": 1.6355, "cur_money": 1667.9288280090805, "all_money": 10394.631603474334, "index": 541}
+{"date": "2020-01-09", "act": "BUY", "trading_vol": 150.9023963300537, "hold_stock": 5486.703543052923, "trading_price": 1.6567, "cur_money": 1417.9288280090805, "all_money": 10507.750587784858, "index": 546}
+{"date": "2020-01-14", "act": "SELL", "trading_vol": 5486.703543052923, "hold_stock": 0, "trading_price": 1.6833, "cur_money": 10653.696902030066, "all_money": 10653.696902030066, "index": 549}
+{"date": "2020-02-05", "act": "BUY", "trading_vol": 981.2711083819465, "hold_stock": 981.2711083819465, "trading_price": 1.6285, "cur_money": 9055.696902030066, "all_money": 10653.696902030066, "index": 559}
+{"date": "2020-02-20", "act": "BUY", "trading_vol": 761.6804083235179, "hold_stock": 1742.9515167054644, "trading_price": 1.7829, "cur_money": 7697.696902030066, "all_money": 10805.205161164238, "index": 570}
+{"date": "2020-02-27", "act": "BUY", "trading_vol": 653.0843237125071, "hold_stock": 2396.0358404179715, "trading_price": 1.767, "cur_money": 6543.696902030066, "all_money": 10777.492232048622, "index": 575}
+{"date": "2020-05-07", "act": "BUY", "trading_vol": 1191.8639951426837, "hold_stock": 3587.8998355606554, "trading_price": 1.647, "cur_money": 4580.696902030066, "all_money": 10489.967931198466, "index": 621}
+{"date": "2020-07-01", "act": "BUY", "trading_vol": 387.32592884929807, "hold_stock": 3975.2257644099536, "trading_price": 1.7737, "cur_money": 3893.6969020300658, "all_money": 10944.554840364, "index": 658}
+{"date": "2020-07-20", "act": "BUY", "trading_vol": 305.5032433563507, "hold_stock": 4280.729007766305, "trading_price": 1.9116, "cur_money": 3309.6969020300658, "all_money": 11492.738473276135, "index": 671}
+{"date": "2020-11-25", "act": "BUY", "trading_vol": 266.6093313265964, "hold_stock": 4547.338339092901, "trading_price": 1.8604, "cur_money": 2813.6969020300658, "all_money": 11273.5651480785, "index": 757}
+{"date": "2020-12-30", "act": "BUY", "trading_vol": 206.83232857913055, "hold_stock": 4754.170667672031, "trading_price": 2.0403, "cur_money": 2391.6969020300658, "all_money": 12091.63131528131, "index": 782}
+{"date": "2021-01-06", "act": "BUY", "trading_vol": 162.7864678064751, "hold_stock": 4916.957135478507, "trading_price": 2.1992, "cur_money": 2033.6969020300658, "all_money": 12847.069034374397, "index": 786}
+{"date": "2021-01-12", "act": "BUY", "trading_vol": 993.3062979430302, "hold_stock": 5910.263433421537, "trading_price": 2.0467, "cur_money": 0.6969020300657576, "all_money": 12097.233071213926, "index": 790}

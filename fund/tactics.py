@@ -4,6 +4,7 @@ import time
 import math
 import json
 
+
 class base_tactics:
     tag = "BASE"
     start_money = 0
@@ -19,6 +20,7 @@ class base_tactics:
     temp_data = {}
     buy_list = []
     risk_per = 0.15
+    price_list = []
 
     def __init__(self,start_money,start_day,code):
         self.cur_money = start_money
@@ -28,7 +30,9 @@ class base_tactics:
         self.today = start_day
         self.code = code
         self.temp_data = {}
-        self.buy_list = []
+        self.buy_list = [] #零时记录购买价格
+        self.sell_list = []
+        self.price_list = [] #每日交易价格
 
     def save_result(self):
         f = open(".\\result\\simulation_"+self.tag+"_"+str(self.code)+".txt","w+",encoding = "UTF-8")
@@ -37,6 +41,12 @@ class base_tactics:
             msg = msg + json.dumps(info) +"\n"
         f.write(msg)
         f.close()
+
+    def fliter_tranding_info(self):
+        ret = []
+        for item in self.record_list:
+            ret.append((item["index"],item["act"]))
+        return ret
 
     def on_end_simulation(self):
         hold_price = self.cal_hold_avg_price()
@@ -47,9 +57,16 @@ class base_tactics:
         self.save_result()
 
     def buy(self,money):
+        if len(self.buy_list) != 0:
+            info = self.buy_list[-1]
+            date = info[2]
+            last_price = info[3]
+            avg20 = self.cal_last_average(20)
+            cur_time_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
+            last_time_stamp = time.mktime(time.strptime(date,'%Y-%m-%d'))
+            if abs(last_price - avg20)/avg20 < 0.03  or (cur_time_stamp - last_time_stamp)/(24 * 3600) < 5:
+                return
         money = min(self.cur_money , money)
-        #if money > self.start_money * self.risk_per * 2 /10:
-            #money = self.start_money * self.risk_per * 2 /10
         money = math.floor(money)
         if money < 10:
             return 
@@ -57,6 +74,15 @@ class base_tactics:
         self.today_trading_money = money
 
     def sell(self,stock_vol):
+        if len(self.sell_list) != 0:
+            info = self.sell_list[-1]
+            date = info[2]
+            last_price = info[3]
+            avg20 = self.cal_last_average(20)
+            cur_time_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
+            last_time_stamp = time.mktime(time.strptime(date,'%Y-%m-%d'))
+            if abs(last_price - avg20)/avg20 < self.risk_per/2  or (cur_time_stamp - last_time_stamp)/(24 * 3600) < 5:
+                return
         stock_vol = math.floor(stock_vol)
         stock_vol = min(self.hold_stock , stock_vol)
         self.hold_stock = self.hold_stock - stock_vol
@@ -74,10 +100,12 @@ class base_tactics:
 
     def settlement(self,today_data):
         price = today_data[1]
+        self.price_list.append(price)
         if self.today_sell_vol != 0:
             money = price * self.today_sell_vol
             self.cur_money += money
             self.record_action("SELL",self.today_sell_vol,price)
+            self.sell_list.append([self.today_sell_vol,money,self.today,price])
             self.today_sell_vol = 0
             if self.hold_stock == 0:
                 self.last_all_money = self.cur_money
@@ -87,7 +115,7 @@ class base_tactics:
             #计算份额
             self.hold_stock += vol
             self.record_action("BUY",vol,price)
-            self.buy_list.append([vol,self.today_trading_money,self.today])
+            self.buy_list.append([vol,self.today_trading_money,self.today,price])
             self.today_trading_money = 0
 
 
@@ -101,7 +129,8 @@ class base_tactics:
             'hold_stock':self.hold_stock,
             'trading_price':trading_price,
             'cur_money':self.cur_money,
-            'all_money':all_money + self.cur_money}
+            'all_money':all_money + self.cur_money,
+            'index':len(self.price_list)}
         self.record_list.append(act_record)
 
     def cal_last_average(self,max_day):
@@ -115,7 +144,7 @@ class base_tactics:
             count += 1
             avg_price += today_data[1]
         while True:
-            cur_time_stamp -= cur_time_stamp
+            cur_time_stamp -= 3600 * 24
             last_day = time.localtime(cur_time_stamp)
             year = last_day[0]
             mon = last_day[1]
@@ -153,13 +182,16 @@ class base_tactics:
         avg_20 = self.cal_last_average(20)
         today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
         cur_price = today_data[1]
+        hold_price = self.cal_hold_avg_price()
+        avg_60 = self.cal_last_average(60)
         #没有持股
         if self.hold_stock == 0:
             #突破二十日向上买入当前金额的对应风险数
-            if cur_price > avg_20:
-                self.buy(self.cur_money/(1/self.risk_per))
+            if avg_20 > 0 :
+                if cur_price < avg_20 and cur_price > avg_60 :
+                    self.buy(self.cur_money/(1/self.risk_per))
         else:
-            hold_price = self.cal_hold_avg_price()
+            
             if (self.hold_stock * cur_price + self.cur_money )/self.last_all_money < 1-self.risk_per :
                 self.sell(self.hold_stock)
                 return
@@ -169,25 +201,21 @@ class base_tactics:
                 return
             #突破二十日向下
             if cur_price < avg_20:
-                avg_60 = self.cal_last_average(60) 
                 #突破六十日向下
                 if cur_price < avg_60:
-                    #清场
-                    self.sell(self.hold_stock)
+                    if hold_price > cur_price and cur_price/hold_price < 1-self.risk_per:
+                        per = min((1 - cur_price/avg_20)/self.risk_per,1)
+                        self.sell(self.hold_stock * per)
                 else:
-                    
-                    #当前价格和持仓成本比较，如果亏损超过最大风险则全部卖出
-                    if cur_price / hold_price < 1-self.risk_per:
-                        self.sell(self.hold_stock)
-                    else:
-                        #没有向下突破六十日均线向下且没有到达最大风险承受
-                        money = (cur_price/hold_price - (1-self.risk_per))/self.risk_per * self.cur_money
+                    #没有向下突破六十日均线向下
+                    if cur_price > hold_price:
+                        money = max((cur_price/hold_price - (1-self.risk_per)),0)/self.risk_per * self.cur_money
                         self.buy(money)
+                        
             #突破二十日向上
             else:
-                avg_40 = self.cal_last_average(40) 
                 #突破六十日向上
-                if cur_price > avg_40:
+                if cur_price > avg_60:
                     #持仓价格高于当前价格
                     last_buy_day = self.buy_list[-1][2]
                     cur_time_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
