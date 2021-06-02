@@ -1,0 +1,2 @@
+python fund_data_pull_run.py
+pause

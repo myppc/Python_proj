@@ -16,7 +16,7 @@ def pull_page_count(fund_url,driver):
     total_page = int("".join(filter(str.isdigit, getPage_text)))
     return total_page
 
-def getData(myrange,driver,lock,code,ret_list):
+def getData(myrange,driver,lock,code,ret_list,total):
     for x in myrange:
         lock.acquire()
         jjcode = code
@@ -44,6 +44,7 @@ def getData(myrange,driver,lock,code,ret_list):
             item = [colum0,colum1,colum2,colum3]
             ret_list.append(item)
         lock.release() 
+        
 # 开始抓取函数
 def catch_code_history(code,history_page_max):
     driver = webdriver.PhantomJS(executable_path=r"C:\\Users\\myppc\\Desktop\\hzy\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe")
@@ -61,7 +62,7 @@ def catch_code_history(code,history_page_max):
     thread_list = []
     ret_list = []
     for r in range_list:
-        t = Thread(target=getData, args=(r,driver,lock,code,ret_list))
+        t = Thread(target=getData, args=(r,driver,lock,code,ret_list,total_page))
         thread_list.append(t)
         t.start()
     for t in thread_list:

@@ -1,5 +1,7 @@
 import os
 from db.db_item import db_item
+import db.config as config
+import re
 
 db_instance = None
 
@@ -12,8 +14,15 @@ class db_loader:
         return db_instance
 
     def __init__(self):
-        pass
+        self.load_all_db()
     
+    def load_all_db(self):
+        file_list = os.listdir(config.db_data_path)
+        for item in file_list:
+            if re.search(".json",item):
+                db_name = item.split(".")[0]
+                self.load_db(db_name)
+
     def create_db(self,db_name):
         if self.check_db_exist(db_name):
             print("ERROR :create fail,db is exist!")
@@ -44,4 +53,3 @@ class db_loader:
     def close(self):
         for item in self.indexs:
             item.close()
-    
