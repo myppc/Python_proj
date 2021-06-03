@@ -47,7 +47,7 @@ class simulation_market:
         for record in record_list:
             for point_info in record:
                 x = point_info[0]
-                y = price[x]
+                y = price[x - 1]
                 c = "blue"
                 if point_info[1] == "BUY":
                     c = "red"
@@ -92,7 +92,9 @@ class simulation_market:
 
 
 market = simulation_market()
-market.auto_running('320007','2018-06-01','2021-06-01',10000)
-#market.auto_running('001938','2017-10-24','2021-06-01',10000)
+market.auto_running('320007','2020-01-15','2021-06-01',1000)
+#market.auto_running('001938','2019-06-05','2021-06-01',10000)
+#market.auto_running('519674','2020-06-01','2021-06-01',10000)
+#market.auto_running('164403','2020-06-01','2021-06-01',1000)
 
 

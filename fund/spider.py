@@ -43,6 +43,7 @@ def getData(myrange,driver,lock,code,ret_list,total):
             colum3 = colum3.replace("%","")
             item = [colum0,colum1,colum2,colum3]
             ret_list.append(item)
+            print("...finish " ,colum0)
         lock.release() 
         
 # 开始抓取函数
