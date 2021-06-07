@@ -3,6 +3,7 @@ from tactics import base_tactics
 from fund_data_manager import fund_data_manager
 import time 
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import MultipleLocator
 
 class simulation_market:
     today = ""
@@ -16,7 +17,6 @@ class simulation_market:
     
 
     def start_round(self):
-        #self.tactics.append(loop_tactics(self.start_money,self.today,self.code))
         self.tactics.append(base_tactics(self.start_money,self.today,self.code))
         count = 0
         while True:
@@ -24,34 +24,41 @@ class simulation_market:
             endday_stamp = time.mktime(time.strptime(self.end_day,'%Y-%m-%d'))
             if today_stamp >= endday_stamp:
                 ret = self.simulation()
-                self.draw_plt(ret)
+                if input("显示折线图？(Y/N) ") == "y":
+                    self.draw_plt(ret)
                 break
             else:
                 self.to_next_around()
 
     def simulation(self):
-        tranding_record = []
         price_list = []
-        for item in self.tactics:
-            item.on_end_simulation()
-            item_record = item.fliter_tranding_info()
-            tranding_record.append(item_record)
-            price_list = item.price_list
-        ret = {"price":price_list,"record":tranding_record}
+        price_date = []
+        tactic = self.tactics[0]
+        tactic.on_end_simulation()
+        tactic_record = tactic.fliter_tranding_info()
+        for price_item in tactic.price_list:
+            price_list.append(price_item[0])
+            price_date.append(price_item[1])
+
+        ret = {"price":price_list,"record":tactic_record,"date":price_date}
         return ret
 
     def draw_plt(self,data):
         price = data["price"]
-        record_list = data["record"]
-        plt.plot(range(0,len(price)),price)#s-:方形
-        for record in record_list:
-            for point_info in record:
-                x = point_info[0]
-                y = price[x - 1]
-                c = "blue"
-                if point_info[1] == "BUY":
-                    c = "red"
-                plt.scatter(x,y,c = c)
+        record = data["record"]
+        date = data["date"]
+        plt.plot(date,price)#s-:方形
+        x_major_locator = MultipleLocator(10)
+        ax = plt.gca()
+        ax.xaxis.set_major_locator(x_major_locator)
+        plt.xticks(rotation=45,size =7)
+        for point_info in record:
+            x = point_info[0]
+            y = price[x - 1]
+            c = "blue"
+            if point_info[1] == "BUY":
+                c = "red"
+            plt.scatter(x,y,c = c)
         plt.show()
 
     def to_next_around(self):
@@ -92,9 +99,10 @@ class simulation_market:
 
 
 market = simulation_market()
-market.auto_running('320007','2020-01-15','2021-06-01',1000)
-#market.auto_running('001938','2019-06-05','2021-06-01',10000)
+#market.auto_running('320007','2020-06-01','2021-06-01',10000)
+market.auto_running('001938','2020-07-28','2021-06-01',10000)
 #market.auto_running('519674','2020-06-01','2021-06-01',10000)
-#market.auto_running('164403','2020-06-01','2021-06-01',1000)
+#market.auto_running('164403','2020-07-27','2021-06-03',10000)
+#market.auto_running('004243','2020-06-01','2021-06-02',10000)
 
 

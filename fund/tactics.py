@@ -24,6 +24,7 @@ class base_tactics:
 
     def __init__(self,start_money,start_day,code):
         self.cur_money = start_money
+        self.last_money = start_money
         self.start_money = start_money
         self.start_day = start_day
         self.today = start_day
@@ -32,8 +33,37 @@ class base_tactics:
         self.buy_list = [] #零时记录购买价格
         self.sell_list = []
         self.price_list = [] #每日交易价格
-        self.max_price = None
-        self.min_price = None
+        self.start_price = None
+
+
+    def find_last_limit_price(self,max_day):
+        today = time.strptime(self.today,'%Y-%m-%d')
+        cur_time_stamp = time.mktime(today)
+        count = 0
+        today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
+        min_price = 99999
+        max_price = 0
+        sub_count = 0
+        while True:
+            cur_time_stamp -= 3600 * 24
+            last_day = time.localtime(cur_time_stamp)
+            year = last_day[0]
+            mon = last_day[1]
+            day = last_day[2]
+            last_key = "{0}-{1}-{2}".format(str(year).zfill(2),str(mon).zfill(2),str(day).zfill(2))
+            last_data = fund_data_manager.get_ins().get_day_data(self.code,last_key)
+            if last_data != "sub":
+                sub_count = 0
+                count += 1
+                max_price = max(last_data[1],max_price)
+                min_price = min(last_data[1],min_price)
+            else:
+                sub_count +=1
+                if sub_count > 10:
+                    break
+            if count >= max_day:
+                break
+        return (min_price,max_price)
 
     def save_result(self):
         f = open(".\\result\\simulation_"+self.tag+"_"+str(self.code)+".txt","w+",encoding = "UTF-8")
@@ -53,20 +83,13 @@ class base_tactics:
         hold_price = self.cal_hold_avg_price()
         today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
         cur_price = today_data[1]
-        all_money = self.hold_stock * cur_price + self.cur_money
-        print(self.tag,self.today,self.code,"cur_money",self.cur_money,"cur_pric",cur_price,"hold_stock",self.hold_stock,"hold_price",hold_price,"all_money",all_money)
+        all_money = self.hold_stock * cur_price + self.cur_money + self.today_trading_money + self.today_sell_vol * cur_price
+        auto_per = round(cur_price/self.start_price * 100,2)
+        money_per = round(all_money/self.start_money * 100,2)
+        print(self.tag,self.today,self.code,"流动资金",self.cur_money + self.today_trading_money,"现价",cur_price,"持有份额",self.hold_stock,"持有价",hold_price,"总价值",all_money,"资金增长率",money_per,"自然增长率",auto_per)
         self.save_result()
 
     def buy(self,money,reson = None):
-        if len(self.buy_list) != 0:
-            info = self.buy_list[-1]
-            date = info[2]
-            last_price = info[3]
-            avg20 = self.cal_last_average(20)
-            cur_time_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
-            last_time_stamp = time.mktime(time.strptime(date,'%Y-%m-%d'))
-            if abs(last_price - avg20)/avg20 *100 < 5  and (cur_time_stamp - last_time_stamp)/(24 * 3600) < 5:
-                return
         money = min(self.cur_money , money)
         money = math.floor(money)
         if money < 10:
@@ -76,15 +99,6 @@ class base_tactics:
         self.temp_data['buy_reson'] = reson
 
     def sell(self,stock_vol,reson = None):
-        if len(self.sell_list) != 0:
-            info = self.sell_list[-1]
-            date = info[2]
-            last_price = info[3]
-            avg20 = self.cal_last_average(20)
-            cur_time_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
-            last_time_stamp = time.mktime(time.strptime(date,'%Y-%m-%d'))
-            if abs(last_price - avg20)/avg20*100 < 5  and (cur_time_stamp - last_time_stamp)/(24 * 3600) < 5:
-                return
         stock_vol = math.floor(stock_vol)
         stock_vol = min(self.hold_stock , stock_vol)
         self.hold_stock = self.hold_stock - stock_vol
@@ -101,16 +115,12 @@ class base_tactics:
             self.settlement(today_data)
             self.today_decision()
             self.today = next_day
+            if self.start_price == None:
+                self.start_price = today_data[1]
 
     def settlement(self,today_data):
         price = today_data[1]
-        if not self.max_price:
-            self.max_price = price
-        if not self.min_price:
-            self.min_price = price
-        self.max_price = max(price,self.max_price)
-        self.min_price = min(price,self.min_price)
-        self.price_list.append(price)
+        self.price_list.append((price,self.today))
         if self.today_sell_vol != 0:
             money = price * self.today_sell_vol
             self.cur_money += money
@@ -119,7 +129,8 @@ class base_tactics:
             self.sell_list.append([self.today_sell_vol,money,self.today,price])
             self.today_sell_vol = 0
             if self.hold_stock == 0:
-                self.clear_buy_list()        
+                self.clear_buy_list()
+                self.last_money = self.cur_money  
         if self.today_trading_money != 0:
             vol = self.today_trading_money/price
             #计算份额
@@ -132,7 +143,7 @@ class base_tactics:
 
 
     def record_action(self,act,trading_vol,trading_price,reson = None):
-        all_money = self.hold_stock * trading_price
+        all_money = self.hold_stock * trading_price 
         act_record = {
             'date':self.today,
             'act':act,
@@ -192,44 +203,67 @@ class base_tactics:
         else:
             return money/vol
 
+    def cal_atr(self,max_day):
+        today = time.strptime(self.today,'%Y-%m-%d')
+        cur_time_stamp = time.mktime(today)
+        count = 0
+        today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
+        price_list = []
+        sub_count = 0
+        avg_price = self.cal_last_average(20)
+        while True:
+            cur_time_stamp -= 3600 * 24
+            last_day = time.localtime(cur_time_stamp)
+            year = last_day[0]
+            mon = last_day[1]
+            day = last_day[2]
+            last_key = "{0}-{1}-{2}".format(str(year).zfill(2),str(mon).zfill(2),str(day).zfill(2))
+            last_data = fund_data_manager.get_ins().get_day_data(self.code,last_key)
+            if last_data != "sub":
+                sub_count = 0
+                count += 1
+                price_list.append(last_data[1])
+            else:
+                sub_count +=1
+                if sub_count > 10:
+                    break
+            if count >= max_day:
+                break
+        all_tr = 0
+        for item in price_list:
+            all_tr += abs(item - avg_price)
+        if len(price_list):
+            return all_tr/len(price_list)
+        else:
+            return 0
+
+
     def today_decision(self):
-        
         today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
         cur_price = today_data[1] #当前价格
         hold_price = self.cal_hold_avg_price()#持有成本价格
-        avgb60_10 = self.cal_last_average(10,60)#六十日前二十日均价
-        avgb40_10 = self.cal_last_average(10,40)#四十日前二十日均价
-        avgb20_10 = self.cal_last_average(10,20)#二十日前二十日均价
-        avgb10_10 = self.cal_last_average(10,10)#十日前二十日均价
-        avgb5_10 = self.cal_last_average(10,5)#五日前二十日均价
-        avg_5 = self.cal_last_average(5)#最近五日平均价格
-        avg_20 = self.cal_last_average(20)#最近二十日平均价格
-        avg_10 = self.cal_last_average(10)#最近十日平均价格
-        d10_5 = (avgb5_10 - avgb10_10)/(10 -5) * 1000
-        d5_0 = (avg_10 - avgb5_10)/5 * 1000
-
-        if avg_5 > avg_20 and avgb60_10 > avgb40_10 and avgb40_10 >avgb20_10 and abs(avgb20_10 - avg_20)/avgb20_10*100 < 5 :
-            self.buy(self.cur_money * self.risk_per,"买入点1")
-            return
-        #5日前均价与今日均价距离没有拉开，且40日前开始出现下跌，现在出现低谷攀升
-        if abs(avgb10_10 - avg_20)/avgb20_10 * 100 < 5 and avgb40_10 > avgb20_10 and avgb20_10 > avgb10_10 and d5_0 > 0:
-            self.buy(self.cur_money * self.risk_per,"出现低谷攀升")
-            return 
-
-        if self.min_price:
-            if abs(cur_price - self.min_price)/self.min_price * 100 < 5 and cur_price > self.min_price :
-                self.buy(self.cur_money * self.risk_per,"历史最低价附近")
+        last_price = self.find_last_limit_price(20)
+        avg50 = self.cal_last_average(50)
+        min_20 = last_price[0]
+        max_20 = last_price[1]
+        
+        
+        if self.hold_stock ==0 : 
+            if cur_price > max_20 and cur_price > avg50:
+                self.buy(self.last_money  /4,"突破二十日最大值")
                 return
-
-        if self.max_price:
-            if self.today == "2020-07-30":
-                print(abs(avg_20 - self.max_price)/self.max_price * 100,avg_10,avgb5_10,d5_0)
-            if abs(avg_20 - self.max_price)/self.max_price * 100 < 5 and d5_0 < 0 :
-                self.sell(self.hold_stock * self.risk_per,"历史最高价附近，且开始下跌")
+        else:
+            atr = self.cal_atr(20)
+            if cur_price - hold_price > atr:
+                if len(self.buy_list) < 4:
+                    self.buy(self.cur_money  /4,"上涨1ATR,收益率 " + str(cur_price/hold_price * 100))
+                    return
+                else:
+                    self.sell(self.hold_stock,"上涨1ATR，止盈 "+ str(cur_price/hold_price * 100))
+                    return
+            if (hold_price - cur_price)/hold_price > 0.1:
+                self.sell(self.hold_stock,"止损 " + str(cur_price/hold_price * 100))
                 return
-
-        if self.hold_stock != 0 : 
-            if cur_price/hold_price > 1+ 2*self.risk_per and d5_0 > 0:
-                self.sell(self.hold_stock,"止盈，全部卖出")
-                return 
- 
+            if (cur_price - hold_price)/hold_price > self.risk_per:
+                self.sell(self.hold_stock,"止盈 " + str(cur_price/hold_price * 100))
+                return
