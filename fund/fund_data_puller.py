@@ -62,5 +62,3 @@ def check_out(code):
         print("check out finish !")
     else: 
         print("cancel CHECK OUT")
-
-main()

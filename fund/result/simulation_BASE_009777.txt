@@ -1,0 +1,5 @@
+{"date": "2020-08-21", "act": "BUY", "trading_vol": 2500.2500250025, "hold_stock": 2500.2500250025, "trading_price": 0.9999, "cur_money": 7500, "all_money": 10000.0, "index": 2, "reson": "突破二十日最大值"}
+{"date": "2021-01-06", "act": "SELL", "trading_vol": 2500.2500250025, "hold_stock": 0, "trading_price": 1.2067, "cur_money": 10517.051705170517, "all_money": 10517.051705170517, "index": 67, "reson": "止盈"}
+{"date": "2021-01-07", "act": "BUY", "trading_vol": 2127.8834479967622, "hold_stock": 2127.8834479967622, "trading_price": 1.2355, "cur_money": 7888.051705170517, "all_money": 10517.051705170517, "index": 68, "reson": "突破二十日最大值"}
+{"date": "2021-02-25", "act": "BUY", "trading_vol": 697.0367094206104, "hold_stock": 2824.9201574173726, "trading_price": 1.1305, "cur_money": 7100.051705170517, "all_money": 10293.623943130857, "index": 98, "reson": "补仓"}
+{"date": "2021-03-05", "act": "BUY", "trading_vol": 667.7953348382242, "hold_stock": 3492.715492255597, "trading_price": 1.0632, "cur_money": 6390.051705170517, "all_money": 10103.506816536668, "index": 104, "reson": "补仓"}

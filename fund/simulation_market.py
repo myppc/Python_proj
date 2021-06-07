@@ -1,4 +1,5 @@
 from loop_tactics import loop_tactics
+from every_day_tactics import every_day_tactics
 from tactics import base_tactics
 from fund_data_manager import fund_data_manager
 import time 
@@ -93,16 +94,39 @@ class simulation_market:
         self.start_round()
 
 
-            
+    def handel_simulation(self):
+        self.code = input("input code ")
+        self.today = input("start_date ") 
+        self.start_money = input("start_money ") 
+        self.end_day = input("end_date ") 
+        self.tactics.append(every_day_tactics(self.start_money,self.today,self.code))
+        count = 0
+        while True:
+            today_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
+            endday_stamp = time.mktime(time.strptime(self.end_day,'%Y-%m-%d'))
+            if today_stamp >= endday_stamp:
+                ret = self.simulation()
+                if input("显示折线图？(Y/N) ") == "y":
+                    self.draw_plt(ret)
+                break
+            else:
+                self.to_next_around()
+                if input("next day ? ") == "n":
+                    ret = self.simulation()
+                    if input("显示折线图？(Y/N) ") == "y":
+                        self.draw_plt(ret)
+                    break
 
 
 
 
 market = simulation_market()
-#market.auto_running('320007','2020-06-01','2021-06-01',10000)
-market.auto_running('001938','2020-07-28','2021-06-01',10000)
+
+#market.auto_running('320007','2018-06-05','2021-06-01',10000)
+#market.auto_running('001938','2020-07-28','2021-06-01',10000)
 #market.auto_running('519674','2020-06-01','2021-06-01',10000)
 #market.auto_running('164403','2020-07-27','2021-06-03',10000)
 #market.auto_running('004243','2020-06-01','2021-06-02',10000)
+#market.auto_running('009777','2020-08-20','2021-06-03',10000)
 
 

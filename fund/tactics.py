@@ -22,7 +22,7 @@ class base_tactics:
     risk_per = 0.15
     price_list = []
 
-    def __init__(self,start_money,start_day,code):
+    def __init__(self,start_money = "",start_day = "",code = ""):
         self.cur_money = start_money
         self.last_money = start_money
         self.start_money = start_money
@@ -32,8 +32,10 @@ class base_tactics:
         self.temp_data = {}
         self.buy_list = [] #零时记录购买价格
         self.sell_list = []
+        self.trading_list = []
         self.price_list = [] #每日交易价格
         self.start_price = None
+        self.sell_per = 100
 
 
     def find_last_limit_price(self,max_day):
@@ -127,6 +129,7 @@ class base_tactics:
             self.record_action("SELL",self.today_sell_vol,price,self.temp_data['sell_reson'])
             del self.temp_data['sell_reson']
             self.sell_list.append([self.today_sell_vol,money,self.today,price])
+            self.trading_list.append([self.today_sell_vol,money,self.today,price,"SELL"])
             self.today_sell_vol = 0
             if self.hold_stock == 0:
                 self.clear_buy_list()
@@ -138,6 +141,7 @@ class base_tactics:
             self.record_action("BUY",vol,price,self.temp_data['buy_reson'])
             del self.temp_data['buy_reson']
             self.buy_list.append([vol,self.today_trading_money,self.today,price])
+            self.trading_list.append([vol,self.today_trading_money,self.today,price,"BUY"])
             self.today_trading_money = 0
 
 
@@ -191,6 +195,7 @@ class base_tactics:
 
     def clear_buy_list(self):
         self.buy_list = []
+        self.trading_list = []
 
     def cal_hold_avg_price(self):
         vol = 0
@@ -243,27 +248,30 @@ class base_tactics:
         cur_price = today_data[1] #当前价格
         hold_price = self.cal_hold_avg_price()#持有成本价格
         last_price = self.find_last_limit_price(20)
-        avg50 = self.cal_last_average(50)
+        avg10 = self.cal_last_average(10)
         min_20 = last_price[0]
         max_20 = last_price[1]
         
-        
+
         if self.hold_stock ==0 : 
-            if cur_price > max_20 and cur_price > avg50:
-                self.buy(self.last_money  /4,"突破二十日最大值")
+            if cur_price > max_20:
+                self.buy(self.last_money  * 0.25,"突破二十日最大值")
                 return
         else:
-            atr = self.cal_atr(20)
-            if cur_price - hold_price > atr:
-                if len(self.buy_list) < 4:
-                    self.buy(self.cur_money  /4,"上涨1ATR,收益率 " + str(cur_price/hold_price * 100))
-                    return
-                else:
-                    self.sell(self.hold_stock,"上涨1ATR，止盈 "+ str(cur_price/hold_price * 100))
-                    return
-            if (hold_price - cur_price)/hold_price > 0.1:
-                self.sell(self.hold_stock,"止损 " + str(cur_price/hold_price * 100))
-                return
-            if (cur_price - hold_price)/hold_price > self.risk_per:
-                self.sell(self.hold_stock,"止盈 " + str(cur_price/hold_price * 100))
-                return
+            last_buy_day = self.trading_list[-1][2]
+            cur_time_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
+            last_time_stamp = time.mktime(time.strptime(last_buy_day,'%Y-%m-%d'))
+            if (avg10 - cur_price)/avg10 > 0.05 and (cur_time_stamp - last_time_stamp) /(24*3600) > 5:
+                self.sell_per -= 10
+                self.sell_per = max(self.sell_per,100)
+                self.buy(self.cur_money  * 0.1,"补仓")
+                return;
+
+            if (cur_price - hold_price)/hold_price * 100 > self.sell_per + 10 and (cur_time_stamp - last_time_stamp) /(24*3600) > 5:
+                self.sell_per += 10 
+                self.sell(self.hold_stock * 0.2 ,"卖出20%")
+                return;
+            if (cur_price - hold_price)/hold_price * 100 > 20 :
+                self.sell_per = 100
+                self.sell(self.hold_stock ,"止盈")
+                return;
