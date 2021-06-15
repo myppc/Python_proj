@@ -50,14 +50,14 @@ class simulation_market:
         price = data["price"]
         record = data["record"]
         date = data["date"]
-        print("draw_plt",data)
+        avg = data["avg"]
         plt.plot(date,price)#s-:方形
+        plt.plot(date,avg,color='green')#s-:方形
         x_major_locator = MultipleLocator(10)
         ax = plt.gca()
         ax.xaxis.set_major_locator(x_major_locator)
         plt.xticks(rotation=45,size =7)
         for point_info in record:
-            print(point_info)
             x = point_info[0]
             y = point_info[1]
             c = "blue"

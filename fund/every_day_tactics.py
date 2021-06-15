@@ -41,6 +41,8 @@ class every_day_tactics(base_tactics):
         self.risk_per = db.get_info("risk_per")
         self.price_list = db.get_info("price_list")
         self.sell_per = db.get_info("sell_per")
+        date = self.find_next_trad_day(self.start_day)
+        self.start_price = fund_data_manager.get_ins().get_day_data(self.code,date)
         
     def save_today(self):
         db = db_loader.get_ins().get_db("running_data_"+self.code)

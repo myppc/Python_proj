@@ -34,7 +34,6 @@ class base_tactics:
         self.sell_list = []
         self.trading_list = []
         self.price_list = [] #每日交易价格
-        self.start_price = None
         self.sell_per = 100
 
     def find_last_limit_price(self,max_day):
@@ -81,6 +80,7 @@ class base_tactics:
         
         price_list = []
         date_list = []
+        avg_list = []
         while True:
             if start_stamp > end_stamp:
                 break
@@ -90,22 +90,37 @@ class base_tactics:
             if data != "sub":
                 price_list.append(data[1])
                 date_list.append(date)
+                avg_price = self.cal_last_average_start_date(20,date)
+                avg_list.append(avg_price)
+                
             start_stamp += 24 * 3600
 
         for item in self.record_list:
             record.append((item["date"],item["trading_price"],item["act"]))
-        print("record",record)
-        return {"record":record,"price":price_list,"date":date_list}
+        return {"record":record,"price":price_list,"date":date_list,"avg":avg_list}
 
     def on_end_simulation(self):
         hold_price = self.cal_hold_avg_price()
-        today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
+        last_trad_date = self.find_next_trad_day(self.today,dir = -1)
+        today_data = fund_data_manager.get_ins().get_day_data(self.code,last_trad_date)
+
         if today_data != "sub":
             cur_price = today_data[1]
             all_money = self.hold_stock * cur_price + self.cur_money + self.today_trading_money + self.today_sell_vol * cur_price
-            auto_per = round(cur_price/self.start_price * 100,2)
-            money_per = round(all_money/self.start_money * 100,2)
-            print(self.tag,self.today,self.code,"流动资金",self.cur_money + self.today_trading_money,"现价",cur_price,"持有份额",self.hold_stock,"持有价",hold_price,"总价值",all_money,"资金增长率",money_per,"自然增长率",auto_per)
+            gain = all_money - self.start_money
+            use = 0
+            for item in self.record_list:
+                if item["act"] == "BUY":
+                    use += item['trading_vol'] * item['trading_price'] 
+            
+            gain_per = 0
+            if use != 0 :
+                gain_per = round(gain/use * 100,2)
+            all_money = all_money
+            date = self.find_next_trad_day(self.start_day,dir = -1)
+            start_price = fund_data_manager.get_ins().get_day_data(self.code,date)[1]
+            auto_per = round((cur_price-start_price)/start_price * 100,2)
+            print(self.tag,self.today,self.code,"流动资金",self.cur_money + self.today_trading_money,"现价",cur_price,"持有份额",self.hold_stock,"持有价",hold_price,"总价值",all_money,"资金增长率",gain_per,"自然增长率",auto_per)
         self.save_result()
 
     def buy(self,money,reson = None):
@@ -171,8 +186,6 @@ class base_tactics:
             trad_data = fund_data_manager.get_ins().get_day_data(self.code,trad_day)
         if trad_data:
             self.settlement(trad_data)
-            if self.start_price == None:
-                self.start_price = trad_data[1]
         self.today_decision()
 
     def settlement(self,trad_data):
@@ -214,6 +227,34 @@ class base_tactics:
             'reson':reson}
         print(self.today,act,"交易价",trading_price,"交易金额",math.floor(trading_vol * trading_price),"交易量",math.floor(trading_vol),"持有量",math.floor(self.hold_stock),"总价值",math.floor(all_money + self.cur_money),reson)
         self.record_list.append(act_record)
+
+    def cal_last_average_start_date(self,max_day,from_date):
+        from_struct = time.strptime(from_date,'%Y-%m-%d')
+        cur_time_stamp = time.mktime(from_struct)
+        avg_price = 0
+        count = 0
+        sub_count = 0
+        while True:
+            cur_time_stamp -= 3600 * 24
+            last_day = time.localtime(cur_time_stamp)
+            year = last_day[0]
+            mon = last_day[1]
+            day = last_day[2]
+            last_key = "{0}-{1}-{2}".format(str(year).zfill(2),str(mon).zfill(2),str(day).zfill(2))
+            last_data = fund_data_manager.get_ins().get_day_data(self.code,last_key)
+            if last_data != "sub":
+                count += 1
+                avg_price += last_data[1]
+                sub_count = 0
+            else:
+                sub_count +=1
+                if sub_count > 10:
+                    break
+
+            if count >= max_day:
+                break
+        return avg_price/count
+
 
     def cal_last_average(self,max_day,before = 0):
         today = time.strptime(self.today,'%Y-%m-%d')
