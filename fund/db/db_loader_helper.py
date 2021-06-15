@@ -51,5 +51,6 @@ class db_loader:
         return self.indexs[db_name]
 
     def close(self):
+        print(self.indexs)
         for item in self.indexs:
             item.close()

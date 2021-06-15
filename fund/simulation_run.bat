@@ -1,0 +1,2 @@
+python simulation_run.py
+pause

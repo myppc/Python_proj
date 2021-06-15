@@ -61,3 +61,26 @@ class fund_data_manager:
 		max_page = self.cal_taget_page(day)[1]
 		server_data = spider.catch_code_history(code,max_page)
 		self.set_history_data(code,server_data)
+		today_struct = time.localtime()
+		today_date = "{0}-{1}-{2}".format(str(today_struct[0]).zfill(2),str(today_struct[1]).zfill(2),str(today_struct[2]).zfill(2))
+		self.save_pull_date(code,today_date)
+
+	def check_fund_data_exist(self,code):
+		return db_loader.get_ins().check_db_exist(code)
+
+	def save_pull_date(self,code,date):
+		pull_record_db = db_loader.get_ins().load_db("pull_record")
+		pull_record_db.set_info(code,date)
+	
+	def check_today_need_pull(self,code):
+		pull_record_db = db_loader.get_ins().load_db("pull_record")
+		date = pull_record_db.get_info(code)
+		if date == None :
+			return True
+		else:
+			today_struct = time.localtime()
+			today_date = "{0}-{1}-{2}".format(str(today_struct[0]).zfill(2),str(today_struct[1]).zfill(2),str(today_struct[2]).zfill(2))
+			today_stamp = time.mktime(time.strptime(today_date,'%Y-%m-%d'))
+			last_stamp = time.mktime(time.strptime(date,'%Y-%m-%d'))
+			return today_stamp > last_stamp
+		

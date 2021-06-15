@@ -5,10 +5,12 @@ from fund_data_manager import fund_data_manager
 import time 
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import MultipleLocator
+import fund_data_puller
+from db.db_loader_helper import db_loader
 
 class simulation_market:
     today = ""
-    code = ""
+    code = None
     tactics = []
     start_money = 0
     end_day = ""
@@ -24,40 +26,42 @@ class simulation_market:
             today_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
             endday_stamp = time.mktime(time.strptime(self.end_day,'%Y-%m-%d'))
             if today_stamp >= endday_stamp:
-                ret = self.simulation()
+                self.simulation()
                 if input("显示折线图？(Y/N) ") == "y":
+                    ret = self.filter_tactic_record()
                     self.draw_plt(ret)
                 break
             else:
                 self.to_next_around()
 
+    def filter_tactic_record(self):
+        tactic = self.tactics[0]
+        ret = tactic.fliter_tranding_info()
+        return ret
+
     def simulation(self):
-        price_list = []
-        price_date = []
         tactic = self.tactics[0]
         tactic.on_end_simulation()
-        tactic_record = tactic.fliter_tranding_info()
-        for price_item in tactic.price_list:
-            price_list.append(price_item[0])
-            price_date.append(price_item[1])
 
-        ret = {"price":price_list,"record":tactic_record,"date":price_date}
-        return ret
+    def close_plt(self):
+        plt.close()
 
     def draw_plt(self,data):
         price = data["price"]
         record = data["record"]
         date = data["date"]
+        print("draw_plt",data)
         plt.plot(date,price)#s-:方形
         x_major_locator = MultipleLocator(10)
         ax = plt.gca()
         ax.xaxis.set_major_locator(x_major_locator)
         plt.xticks(rotation=45,size =7)
         for point_info in record:
+            print(point_info)
             x = point_info[0]
-            y = price[x - 1]
+            y = point_info[1]
             c = "blue"
-            if point_info[1] == "BUY":
+            if point_info[2] == "BUY":
                 c = "red"
             plt.scatter(x,y,c = c)
         plt.show()
@@ -72,9 +76,9 @@ class simulation_market:
                 break
         for item in self.tactics:
             item.on_end_today(self.today)
-
     
     def cal_next_day(self):
+
         target_day = time.strptime(self.today,'%Y-%m-%d')
         target_stamp = time.mktime(target_day)
         target_stamp+= 3600 *24
@@ -94,10 +98,10 @@ class simulation_market:
         self.start_round()
 
 
-    def handel_simulation(self):
-        self.code = input("input code ")
+    def handel_running(self):
+        self.code = int(input("input code "))
         self.today = input("start_date ") 
-        self.start_money = input("start_money ") 
+        self.start_money = int(input("start_money "))
         self.end_day = input("end_date ") 
         self.tactics.append(every_day_tactics(self.start_money,self.today,self.code))
         count = 0
@@ -105,28 +109,58 @@ class simulation_market:
             today_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
             endday_stamp = time.mktime(time.strptime(self.end_day,'%Y-%m-%d'))
             if today_stamp >= endday_stamp:
-                ret = self.simulation()
+                self.simulation()
                 if input("显示折线图？(Y/N) ") == "y":
+                    ret = self.filter_tactic_record()
                     self.draw_plt(ret)
                 break
             else:
                 self.to_next_around()
-                if input("next day ? ") == "n":
-                    ret = self.simulation()
-                    if input("显示折线图？(Y/N) ") == "y":
-                        self.draw_plt(ret)
-                    break
+
+    def handel_today(self):
+        if self.code == None :
+            self.code = input("input code = ")
+        else:
+            print("====================> handel ",self.code)
+        is_exist = fund_data_manager.get_ins().check_fund_data_exist(self.code)
+        if not is_exist:
+            print("缺少基础数据库，需要先checkout当前基金数据")
+            fund_data_puller.main()
+        tactics = None
+
+        if fund_data_manager.get_ins().check_fund_data_exist("running_data_"+self.code):
+            print("加载交易进程")
+            tactics = every_day_tactics(0,"",self.code)
+            tactics.load_today()
+        else:
+            print("不存在该进程")
+            if input("初始化交易进程？(Y/N) ") == "y":
+                start_date = input("start date (year-mon-day) " )
+                if start_date == "":
+                    today_struct = time.localtime()
+                    start_date = "{0}-{1}-{2}".format(str(today_struct[0]).zfill(2),str(today_struct[1]).zfill(2),str(today_struct[2]).zfill(2))
+                start_money = input("start money ")
+                print("---------init date ",start_date)
+                tactics = every_day_tactics(int(start_money),start_date,self.code)
+                db_loader.get_ins().load_db("running_data_"+self.code)
+            else:
+                return
+        self.tactics.append(tactics)
+        if fund_data_manager.get_ins().check_today_need_pull(self.code):
+            tactics.update_db_data()
+        today_struct = time.localtime()
+        today = "{0}-{1}-{2}".format(str(today_struct[0]).zfill(2),str(today_struct[1]).zfill(2),str(today_struct[2]).zfill(2))
+        print("今日交易日期",today)
+        is_go = True
+        self.today = today
+        tactics.on_end_today(self.today)
+        self.simulation()
+        tactics.save_today()
+        if input("显示折线图？(Y/N) ") == "y":
+            ret = self.filter_tactic_record()
+            self.draw_plt(ret)
 
 
 
-
-market = simulation_market()
-
-#market.auto_running('320007','2018-06-05','2021-06-01',10000)
-#market.auto_running('001938','2020-07-28','2021-06-01',10000)
-#market.auto_running('519674','2020-06-01','2021-06-01',10000)
-#market.auto_running('164403','2020-07-27','2021-06-03',10000)
-#market.auto_running('004243','2020-06-01','2021-06-02',10000)
-#market.auto_running('009777','2020-08-20','2021-06-03',10000)
 
 

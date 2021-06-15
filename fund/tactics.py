@@ -22,7 +22,7 @@ class base_tactics:
     risk_per = 0.15
     price_list = []
 
-    def __init__(self,start_money = "",start_day = "",code = ""):
+    def __init__(self,start_money,start_day,code):
         self.cur_money = start_money
         self.last_money = start_money
         self.start_money = start_money
@@ -36,7 +36,6 @@ class base_tactics:
         self.price_list = [] #每日交易价格
         self.start_price = None
         self.sell_per = 100
-
 
     def find_last_limit_price(self,max_day):
         today = time.strptime(self.today,'%Y-%m-%d')
@@ -76,19 +75,37 @@ class base_tactics:
         f.close()
 
     def fliter_tranding_info(self):
-        ret = []
+        record = []
+        start_stamp = time.mktime(time.strptime(self.start_day,'%Y-%m-%d'))
+        end_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
+        
+        price_list = []
+        date_list = []
+        while True:
+            if start_stamp > end_stamp:
+                break
+            struct = time.localtime(start_stamp)
+            date = "{0}-{1}-{2}".format(str(struct[0]).zfill(2),str(struct[1]).zfill(2),str(struct[2]).zfill(2))
+            data = fund_data_manager.get_ins().get_day_data(self.code,date)
+            if data != "sub":
+                price_list.append(data[1])
+                date_list.append(date)
+            start_stamp += 24 * 3600
+
         for item in self.record_list:
-            ret.append((item["index"],item["act"]))
-        return ret
+            record.append((item["date"],item["trading_price"],item["act"]))
+        print("record",record)
+        return {"record":record,"price":price_list,"date":date_list}
 
     def on_end_simulation(self):
         hold_price = self.cal_hold_avg_price()
         today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
-        cur_price = today_data[1]
-        all_money = self.hold_stock * cur_price + self.cur_money + self.today_trading_money + self.today_sell_vol * cur_price
-        auto_per = round(cur_price/self.start_price * 100,2)
-        money_per = round(all_money/self.start_money * 100,2)
-        print(self.tag,self.today,self.code,"流动资金",self.cur_money + self.today_trading_money,"现价",cur_price,"持有份额",self.hold_stock,"持有价",hold_price,"总价值",all_money,"资金增长率",money_per,"自然增长率",auto_per)
+        if today_data != "sub":
+            cur_price = today_data[1]
+            all_money = self.hold_stock * cur_price + self.cur_money + self.today_trading_money + self.today_sell_vol * cur_price
+            auto_per = round(cur_price/self.start_price * 100,2)
+            money_per = round(all_money/self.start_money * 100,2)
+            print(self.tag,self.today,self.code,"流动资金",self.cur_money + self.today_trading_money,"现价",cur_price,"持有份额",self.hold_stock,"持有价",hold_price,"总价值",all_money,"资金增长率",money_per,"自然增长率",auto_per)
         self.save_result()
 
     def buy(self,money,reson = None):
@@ -111,25 +128,62 @@ class base_tactics:
         self.temp_data['sell_reson'] = reson
         
 
-    def on_end_today(self,next_day):
-        today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
-        if today_data != "sub":
-            self.settlement(today_data)
-            self.today_decision()
-            self.today = next_day
-            if self.start_price == None:
-                self.start_price = today_data[1]
+    def find_next_trad_day(self,start_date,end_date = -1,dir = 1):
+        start_stamp = time.mktime(time.strptime(start_date,'%Y-%m-%d'))
+        endday_stamp = None
+        if end_date == -1:
+            endday_stamp = start_stamp + dir * 24 * 3600 *30
+        else:
+            endday_stamp = time.mktime(time.strptime(end_date,'%Y-%m-%d'))
+        cur_date = start_date
+        start_data = fund_data_manager.get_ins().get_day_data(self.code,cur_date)
+        if start_data != "sub":
+            return cur_date
+        while True:
+            ret = self.cal_next_day(cur_date,dir)
+            is_go = ret[0]
+            cur_date = ret[1]
+            if not is_go:
+                return cur_date
+            today_stamp = time.mktime(time.strptime(cur_date,'%Y-%m-%d'))
+            if dir == 1 and today_stamp > endday_stamp:
+                return None
+            elif dir == -1 and today_stamp < endday_stamp:
+                return None
+    
+    def cal_next_day(self,cur_date,dir):
+        target_day = time.strptime(cur_date,'%Y-%m-%d')
+        target_stamp = time.mktime(target_day)
+        target_stamp+= 3600 * 24 * dir
+        next_day = time.localtime(target_stamp)
+        next_day = "{0}-{1}-{2}".format(str(next_day[0]).zfill(2),str(next_day[1]).zfill(2),str(next_day[2]).zfill(2))
+        if fund_data_manager.get_ins().get_day_data(self.code,next_day) == "sub":
+            return (True,next_day)
+        else:
+            return (False,next_day)
 
-    def settlement(self,today_data):
-        price = today_data[1]
-        self.price_list.append((price,self.today))
+    def on_end_today(self,next_day):
+        
+        trad_day = self.find_next_trad_day(self.today,next_day,dir = 1)
+        self.today = next_day
+        trad_data = None
+        if trad_day:
+            trad_data = fund_data_manager.get_ins().get_day_data(self.code,trad_day)
+        if trad_data:
+            self.settlement(trad_data)
+            if self.start_price == None:
+                self.start_price = trad_data[1]
+        self.today_decision()
+
+    def settlement(self,trad_data):
+        price = trad_data[1]
         if self.today_sell_vol != 0:
             money = price * self.today_sell_vol
             self.cur_money += money
-            self.record_action("SELL",self.today_sell_vol,price,self.temp_data['sell_reson'])
+            self.record_action("SELL",trad_data[0],self.today_sell_vol,price,self.temp_data['sell_reson'])
             del self.temp_data['sell_reson']
-            self.sell_list.append([self.today_sell_vol,money,self.today,price])
-            self.trading_list.append([self.today_sell_vol,money,self.today,price,"SELL"])
+            self.sell_list.append([self.today_sell_vol,money,trad_data[0],price])
+            self.trading_list.append([self.today_sell_vol,money,trad_data[0],price,"SELL"])
             self.today_sell_vol = 0
             if self.hold_stock == 0:
                 self.clear_buy_list()
@@ -138,18 +192,18 @@ class base_tactics:
             vol = self.today_trading_money/price
             #计算份额
             self.hold_stock += vol
-            self.record_action("BUY",vol,price,self.temp_data['buy_reson'])
+            self.record_action("BUY",trad_data[0],vol,price,self.temp_data['buy_reson'])
             del self.temp_data['buy_reson']
-            self.buy_list.append([vol,self.today_trading_money,self.today,price])
-            self.trading_list.append([vol,self.today_trading_money,self.today,price,"BUY"])
+            self.buy_list.append([vol,self.today_trading_money,trad_data[0],price])
+            self.trading_list.append([vol,self.today_trading_money,trad_data[0],price,"BUY"])
             self.today_trading_money = 0
 
 
 
-    def record_action(self,act,trading_vol,trading_price,reson = None):
+    def record_action(self,act,trad_date,trading_vol,trading_price,reson = None):
         all_money = self.hold_stock * trading_price 
         act_record = {
-            'date':self.today,
+            'date':trad_date,
             'act':act,
             'trading_vol':trading_vol,
             'hold_stock':self.hold_stock,
@@ -245,6 +299,8 @@ class base_tactics:
 
     def today_decision(self):
         today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
+        if today_data == "sub":
+            return
         cur_price = today_data[1] #当前价格
         hold_price = self.cal_hold_avg_price()#持有成本价格
         last_price = self.find_last_limit_price(20)
