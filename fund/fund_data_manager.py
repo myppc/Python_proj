@@ -83,4 +83,11 @@ class fund_data_manager:
 			today_stamp = time.mktime(time.strptime(today_date,'%Y-%m-%d'))
 			last_stamp = time.mktime(time.strptime(date,'%Y-%m-%d'))
 			return today_stamp > last_stamp
+
+	def flush_all_fund_code(self):
+		data_list = spider.catch_all_fund_list()
+		db = db_loader.get_ins().load_db("fund_list")
+		for item in data_list:
+			db.set_info(item[0],item)
+			
 		

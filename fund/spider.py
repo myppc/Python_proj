@@ -7,7 +7,7 @@ import os
 import time
 from selenium.webdriver.common.by import By
 import pandas as pd
-
+import json
 # 下面是利用 selenium 抓取html页面的代码
 # 初始化函数
 def pull_page_count(fund_url,driver):
@@ -107,3 +107,16 @@ def sort_server_data(server_data):
     for item in sort_list:
         del item[0]
     return server_data
+
+def catch_all_fund_list():
+    url = 'http://fund.eastmoney.com/js/fundcode_search.js'
+    driver = webdriver.PhantomJS(executable_path=r"C:\\Users\\myppc\\Desktop\\hzy\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe")
+    driver.get(url)
+    element = driver.find_element(By.XPATH,"//pre[contains(text(),'var')]")
+    text = element.text
+    pos = text.find("[")
+    json_str = text[pos:-1]
+    data_list = json.loads(json_str)
+    return data_list
+
+def 

@@ -45,6 +45,13 @@ class db_item:
         else:
             return None
 
+    def get_all_keys(self):
+        ret = list(self.data.items())
+        return ret
+
+    def get_all_info(self):
+        return copy.deepcopy(self.data)
+
     def close(self):
         if self.is_flush:
             self.flush()
