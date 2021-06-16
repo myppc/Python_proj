@@ -58,13 +58,12 @@ class simulation_market:
         plt.plot(date,avg,color='green')#s-:方形
         if "wave" in data:
             wave = data["wave"]
-            print(wave)
             wave_price = []
             wave_date = []
             for item in wave:
                 wave_date.append(item[0])
                 wave_price.append(item[1])
-                plt.scatter(item[0],item[1],c = "gold")
+                #plt.scatter(item[0],item[1],c = item[2])
             plt.plot(wave_date,wave_price,color='red',linestyle ="--")#s-:方形        
         
         x_major_locator = MultipleLocator(10)

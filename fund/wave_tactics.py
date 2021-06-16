@@ -26,12 +26,13 @@ class wave_tactics(base_tactics):
         base_tactics.__init__(self,start_money,start_day,code)
         self.wave = []
         self.wave_dir = 0
+        self.last_dir = 0
         self.limit_price = 0
         
 
     def today_decision(self):
-        today_avg = self.cal_last_average(10)
-        last_avg = self.cal_last_average(10,1)
+        today_avg = self.cal_last_average(5)
+        last_avg = self.cal_last_average(5,1)
         today_dir = self.wave_dir
         if last_avg > today_avg :
             today_dir = -1
@@ -40,24 +41,37 @@ class wave_tactics(base_tactics):
         if len(self.wave) == 0:
             self.wave.append((self.today,today_avg))
             self.wave_dir = today_dir
+            self.last_dir = today_dir
             self.limit_price = today_avg
             return 
         else:
-            last_dir = self.wave_dir
-            last_wave = self.wave[-1]
-            if last_dir != today_dir:
-                if abs(self.limit_price -today_avg)/self.limit_price * 100 >2:
+            cur_dir = self.wave_dir
+            #当前不是平台期
+            if cur_dir != 0:
+                #出现方向变化，转入平台期
+                if cur_dir != today_dir:
+                    self.last_dir = self.wave_dir
+                    self.wave_dir = 0
+                    self.wave.append((self.today,today_avg))
+                    if self.last_dir == 1:
+                        self.buy(self.cur_money/2,"买入一半1")
+                        
+                    elif self.last_dir == -1:
+                        self.sell(self.hold_stock/2,"止盈一般")
+                self.limit_price = today_avg
+            else:
+            #当前是平台期
+                #平台期均价和当前均价相差3%就视为移出平台期
+                if abs(self.limit_price -  today_avg)/self.limit_price * 100 > 3:
                     self.wave_dir = today_dir
                     self.wave.append((self.today,today_avg))
-                    self.limit_price = today_avg
-                    if last_dir == -1 and today_dir == 1 and self.hold_stock == 0:
-                        self.buy(self.cur_money,"满仓")
-                        print(self.today,last_dir,today_dir,self.limit_price,today_avg)
-                    elif last_dir == 1 and today_dir == -1 and self.hold_stock != 0:
-                        self.sell(self.hold_stock,"止盈")
+                    if today_dir == 1:
+                        self.sell(self.hold_stock,"清仓")
+                    elif today_dir == -1:
+                        self.buy(self.cur_money/2,"买入一半2")
+                        
 
-            else:
-                self.limit_price = today_avg
+
 
                 
 
