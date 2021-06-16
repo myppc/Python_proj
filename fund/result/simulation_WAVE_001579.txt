@@ -1,0 +1,7 @@
+{"date": "2021-01-12", "act": "BUY", "trading_vol": 1873.3608092918696, "hold_stock": 1873.3608092918696, "trading_price": 2.669, "cur_money": 5000, "all_money": 10000.0, "index": 0, "reson": "买入一半1"}
+{"date": "2021-01-18", "act": "BUY", "trading_vol": 961.9084263178145, "hold_stock": 2835.269235609684, "trading_price": 2.599, "cur_money": 2500, "all_money": 9868.86474334957, "index": 0, "reson": "买入一半2"}
+{"date": "2021-01-21", "act": "SELL", "trading_vol": 1417, "hold_stock": 1418.269235609684, "trading_price": 2.634, "cur_money": 6232.378, "all_money": 9968.099166595908, "index": 0, "reson": "止盈一般"}
+{"date": "2021-02-09", "act": "SELL", "trading_vol": 1418.269235609684, "hold_stock": 0, "trading_price": 2.735, "cur_money": 10111.344359392486, "all_money": 10111.344359392486, "index": 0, "reson": "清仓"}
+{"date": "2021-02-24", "act": "BUY", "trading_vol": 1872.915894775843, "hold_stock": 1872.915894775843, "trading_price": 2.699, "cur_money": 5056.344359392486, "all_money": 10111.344359392486, "index": 0, "reson": "买入一半1"}
+{"date": "2021-03-02", "act": "BUY", "trading_vol": 956.4888384411654, "hold_stock": 2829.4047332170085, "trading_price": 2.643, "cur_money": 2528.344359392486, "all_money": 10006.461069285038, "index": 0, "reson": "买入一半2"}
+{"date": "2021-03-17", "act": "SELL", "trading_vol": 1414, "hold_stock": 1415.4047332170085, "trading_price": 2.445, "cur_money": 5985.574359392485, "all_money": 9446.23893210807, "index": 0, "reson": "止盈一般"}

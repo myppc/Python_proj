@@ -1,0 +1,2 @@
+{"date": "2020-12-03", "act": "BUY", "trading_vol": 1018.3299389002036, "hold_stock": 1018.3299389002036, "trading_price": 2.455, "cur_money": 7500, "all_money": 10000.0, "index": 0, "reson": "突破二十日最大值"}
+{"date": "2021-03-08", "act": "BUY", "trading_vol": 302.907915993538, "hold_stock": 1321.2378548937415, "trading_price": 2.476, "cur_money": 6750, "all_money": 10021.384928716903, "index": 0, "reson": "补仓"}
