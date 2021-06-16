@@ -90,7 +90,7 @@ class base_tactics:
             if data != "sub":
                 price_list.append(data[1])
                 date_list.append(date)
-                avg_price = self.cal_last_average_start_date(20,date)
+                avg_price = self.cal_last_average_start_date(10,date)
                 avg_list.append(avg_price)
                 
             start_stamp += 24 * 3600
@@ -262,8 +262,10 @@ class base_tactics:
         cur_time_stamp -= 3600 * 24 * before
         avg_price = 0
         count = 0
-        today_data = fund_data_manager.get_ins().get_day_data(self.code,self.today)
         sub_count = 0
+        last_day = time.localtime(cur_time_stamp)
+        last_key = "{0}-{1}-{2}".format(str(last_day[0]).zfill(2),str(last_day[1]).zfill(2),str(last_day[2]).zfill(2))
+        today_data = fund_data_manager.get_ins().get_day_data(self.code,last_key)
         if today_data != "sub":
             count += 1
             avg_price += today_data[1]

@@ -1,4 +1,5 @@
 from loop_tactics import loop_tactics
+from wave_tactics import wave_tactics
 from every_day_tactics import every_day_tactics
 from tactics import base_tactics
 from fund_data_manager import fund_data_manager
@@ -20,7 +21,7 @@ class simulation_market:
     
 
     def start_round(self):
-        self.tactics.append(base_tactics(self.start_money,self.today,self.code))
+        self.tactics.append(wave_tactics(self.start_money,self.today,self.code))
         count = 0
         while True:
             today_stamp = time.mktime(time.strptime(self.today,'%Y-%m-%d'))
@@ -51,8 +52,21 @@ class simulation_market:
         record = data["record"]
         date = data["date"]
         avg = data["avg"]
+        wave = None
+
         plt.plot(date,price)#s-:方形
         plt.plot(date,avg,color='green')#s-:方形
+        if "wave" in data:
+            wave = data["wave"]
+            print(wave)
+            wave_price = []
+            wave_date = []
+            for item in wave:
+                wave_date.append(item[0])
+                wave_price.append(item[1])
+                plt.scatter(item[0],item[1],c = "gold")
+            plt.plot(wave_date,wave_price,color='red',linestyle ="--")#s-:方形        
+        
         x_major_locator = MultipleLocator(10)
         ax = plt.gca()
         ax.xaxis.set_major_locator(x_major_locator)

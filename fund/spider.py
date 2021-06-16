@@ -119,4 +119,15 @@ def catch_all_fund_list():
     data_list = json.loads(json_str)
     return data_list
 
-def 
+def catch_fund_base_data(code_list):
+    basse_url = 'https://qieman.com/funds/'
+    driver = webdriver.PhantomJS(executable_path=r"C:\\Users\\myppc\\Desktop\\hzy\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe")
+    for code in code_list:
+        url = basse_url + code
+        driver.get(url)
+        base_element = driver.find_element_by_xpath("//div[@class='ant-row fund-row fund-info-row']")
+        elements = base_element.find_elements_by_xpath("//div[@class='ant-col ant-col-xs-6 ant-col-sm-6 ant-col-md-4']")
+        for element in elements:
+            text = element.find_element_by_xpath("//div[@class='label-data']").find_element_by_xpath("//span[@class='qm-tooltip  qm-label qm-label-sm qm-label-block']").text
+            print(text)
+        print(elements)

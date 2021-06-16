@@ -6,7 +6,7 @@ import time
 
 
 def main():
-    act = input("1.执行今日操作，2.进行数据模拟 ,3.拉取全部基金列表 (1/2/3)? ")
+    act = input("1.执行今日操作，2.进行数据模拟 , 3.拉取全部基金列表,4.拉取指定基金数据  ")
     if act == "1":
         market = simulation_market()
         for code in code_list:
@@ -20,7 +20,9 @@ def main():
         start_money = int(input("start money = "))
         market.auto_running(code,start_day,end_day,start_money)
     elif act == "3":
-        fund_data_manager.get_ins().flush_all_fund_code()
+        fund_data_manager.get_ins().check_out_all_fund_code()
+    elif act == "4":
+        fund_data_manager.get_ins().check_out_fund_base_data()
     db_loader.get_ins().close()
 
 main()
