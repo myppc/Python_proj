@@ -23,8 +23,11 @@ class every_day_tactics(base_tactics):
     buy_list = []
     risk_per = 0.15
     price_list = []
-
-    def load_today(self):
+    wave_dir = 0
+    wave = []
+    last_dir = 0
+    limit_price = 0
+    def load_today(self): 
         db = db_loader.get_ins().get_db("running_data_"+self.code)
         self.start_money = db.get_info("start_money")
         self.last_money = db.get_info("last_money")
@@ -43,6 +46,11 @@ class every_day_tactics(base_tactics):
         self.sell_per = db.get_info("sell_per")
         date = self.find_next_trad_day(self.start_day)
         self.start_price = fund_data_manager.get_ins().get_day_data(self.code,date)
+        self.wave = db.get_info("wave") or []
+        self.wave_dir = db.get_info("wave_dir") or 0
+        self.last_dir = db.get_info("last_dir") or 0
+        self.limit_price = db.get_info("limit_price") or 0
+        
         
     def save_today(self):
         db = db_loader.get_ins().get_db("running_data_"+self.code)
@@ -61,6 +69,10 @@ class every_day_tactics(base_tactics):
         db.set_info("risk_per",self.risk_per)
         db.set_info("price_list",self.price_list)
         db.set_info("sell_per",self.sell_per)
+        db.set_info("wave",self.wave)
+        db.set_info("wave_dir",self.wave_dir)
+        db.set_info("last_dir",self.last_dir)
+        db.set_info("limit_price",self.limit_price)
         db.flush()
 
     def update_db_data(self):
@@ -68,9 +80,9 @@ class every_day_tactics(base_tactics):
 
     def today_decision(self):
         cur_time = time.localtime()
-        # if cur_time[3] > 14:
-        #     print("今日买卖时间已经结束，不能再进行交易")
-        #     return
+        if cur_time[3] > 14:
+            print("今日买卖时间已经结束，不能再进行交易")
+            return
         basis_day = self.find_next_trad_day(self.today,end_date = -1,dir = -1)
         basis_data = fund_data_manager.get_ins().get_day_data(self.code,basis_day)
         if basis_data == "sub":
@@ -113,4 +125,48 @@ class every_day_tactics(base_tactics):
                 if input() == "y":
                     self.sell(self.hold_stock ,"止盈")
                 return;
+
+        today_avg = self.cal_last_average_start_date(5,basis_day)
+        last_avg = self.cal_last_average_start_date(5,basis_day,1)
+        today_dir = self.wave_dir
+        if last_avg > today_avg :
+            today_dir = -1
+        elif last_avg < today_avg :
+            today_dir = 1
+        if len(self.wave) == 0:
+            self.wave.append((basis_day,today_avg))
+            self.wave_dir = today_dir
+            self.last_dir = today_dir
+            self.limit_price = today_avg
+            return 
+        else:
+            cur_dir = self.wave_dir
+            #当前不是平台期
+            if cur_dir != 0:
+                #出现方向变化，转入平台期
+                if cur_dir != today_dir:
+                    self.last_dir = self.wave_dir
+                    self.wave_dir = 0
+                    self.wave.append((basis_day,today_avg))
+                self.limit_price = today_avg
+            else:
+            #当前是平台期
+                #平台期均价和当前均价相差3%就视为移出平台期
+                if abs(self.limit_price -  today_avg)/self.limit_price * 100 > 3:
+                    self.wave_dir = today_dir
+                    self.wave.append((basis_day,today_avg))
+                    if today_dir == 1:
+                        print(basis_day,"SELL","触发平台期结束",cur_price,"持仓价",hold_price,"卖出",round(self.hold_stock/2,2),"(Y/N)?")
+                        if input() == "y":
+                            self.sell(self.hold_stock/2,"触发平台期结束")
+                    if today_dir == -1:
+                        if hold_price > cur_price:
+                            print(basis_day,"BUY","触发平台期结束,方向向下",cur_price,"持仓价",hold_price,"加仓",round(self.cur_money/4,2),"(Y/N)?")
+                            if input() == "y":
+                                self.buy(self.cur_money/4,"继续加仓")
+                        else:
+                            print(basis_day,"SELL","触发平台期结束,方向向下",cur_price,"持仓价",hold_price,"清仓",round(self.hold_stock,2),"(Y/N)?")
+                            if input() == "y":
+                                self.sell(self.hold_stock,"清仓")
+
         print(self.today ,"没有任何操作")

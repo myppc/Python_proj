@@ -49,7 +49,7 @@ def update(code):
         if target_day == today_str:
             print("data is already up to date")
         else:
-            print("update from ",target_day," to ",today_str)
+            print(code,"update from ",target_day," to ",today_str)
             fund_data_manager.get_ins().pull_cur_to_target_day(code,target_day)
             print("update finish !")
 

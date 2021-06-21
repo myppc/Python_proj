@@ -8,6 +8,9 @@ import time
 from selenium.webdriver.common.by import By
 import pandas as pd
 import json
+from db.db_loader_helper import db_loader
+import re
+import random
 # 下面是利用 selenium 抓取html页面的代码
 # 初始化函数
 def pull_page_count(fund_url,driver):
@@ -120,14 +123,61 @@ def catch_all_fund_list():
     return data_list
 
 def catch_fund_base_data(code_list):
-    basse_url = 'https://qieman.com/funds/'
+    db = db_loader.get_ins().load_db("fund_base_data")
+    ignore_db = db_loader.get_ins().load_db("ignore_base_data_pull_list")
+    ignore_list = ignore_db.get_info("ignore_list") or []
+    base_url = 'http://fund.eastmoney.com/{0}.html?spm=001.1.swh'
+    sharpe_url = 'http://fundf10.eastmoney.com/tsdata_{0}.html'
     driver = webdriver.PhantomJS(executable_path=r"C:\\Users\\myppc\\Desktop\\hzy\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe")
     for code in code_list:
-        url = basse_url + code
-        driver.get(url)
-        base_element = driver.find_element_by_xpath("//div[@class='ant-row fund-row fund-info-row']")
-        elements = base_element.find_elements_by_xpath("//div[@class='ant-col ant-col-xs-6 ant-col-sm-6 ant-col-md-4']")
-        for element in elements:
-            text = element.find_element_by_xpath("//div[@class='label-data']").find_element_by_xpath("//span[@class='qm-tooltip  qm-label qm-label-sm qm-label-block']").text
-            print(text)
-        print(elements)
+        if code in ignore_list:
+            continue
+        info = {}
+
+        try:
+            url = base_url.format(code)
+            driver.get(url)
+            body_element = driver.find_element_by_xpath("//div[@id='body']").find_element_by_xpath("//div[@class='quotationItem_left quotationItem_left02']")
+            gain_element = body_element.find_element_by_xpath("//div[@id='IncreaseAmount']").find_element_by_xpath("//li[@id='increaseAmount_stage']")
+            gain_text = gain_element.text
+            
+            gain_text_list = re.split("阶段涨幅\n|同类平均\n|沪深300\n|跟踪标的\n|同类排名\n|四分位排名\n",gain_text)[1:]
+            if "跟踪标的\n" in gain_text:
+                del gain_text_list[3]
+            name_list = ["stage_rate","same_avg","hs_300","same_rank","rank4"]
+            index = 0
+            for item in gain_text_list:
+                name = name_list[index]
+                info[name] = item.split("\n")
+                index +=1 
+            db.set_info(code,info)
+            print("succ stage1 " ,code)
+        except BaseException:
+            print("check out error 1 " ,code)
+            db.flush()
+        time.sleep(round(random.uniform(0.5,2.5),2))
+
+        try:
+            url = sharpe_url.format(code)
+            driver.get(url)
+            sharpe_element = driver.find_element_by_xpath("//div[@class='boxitem w790']").find_element_by_xpath("//table[@class='fxtb']")
+            sharpe_text = sharpe_element.text
+            sharpe_text_list = re.split("\n标准差 |\n夏普比率 |\n信息比率",sharpe_text)[1:]
+            if "\n信息比率" in sharpe_text:
+                del sharpe_text_list[2]
+            name_list = ["standard_dev","sharpe_rate"]
+            index = 0
+            for item in sharpe_text_list:
+                name = name_list[index]
+                info[name] = item.split(" ")
+                index +=1 
+            db.set_info(code,info)
+            print("succ stage2 " ,code)
+        except BaseException:
+            print("check out error 2 " ,code)
+            db.flush()
+        ignore_list.append(code)
+        ignore_db.set_info("ignore_list",ignore_list)
+        time.sleep(round(random.uniform(0.5,2.5),2))
+    db.flush()
+    ignore_db.flush()

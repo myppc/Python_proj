@@ -98,8 +98,9 @@ class fund_data_manager:
 			db.set_info(item[0],item)
 	
 	def check_out_fund_base_data(self):
-		code_list = ["001027"]
+		db = db_loader.get_ins().load_db("fund_list")
+		code_list = db.get_all_keys()
 		spider.catch_fund_base_data(code_list)
+    			
+    			
 
-			
-		

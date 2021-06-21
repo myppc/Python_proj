@@ -10,7 +10,6 @@ class base_tactics:
     start_money = 0
     cur_money = 0
     hold_stock = 0
-    hold_price = 0 #持仓价
     start_day = ""
     today = ""
     record_list = []
@@ -35,6 +34,11 @@ class base_tactics:
         self.trading_list = []
         self.price_list = [] #每日交易价格
         self.sell_per = 100
+        self.today_trading_money = 0
+        self.today_sell_vol = 0
+        self.record_list = []
+        self.hold_stock = 0
+        self.risk_per = 0.15
 
     def find_last_limit_price(self,max_day):
         today = time.strptime(self.today,'%Y-%m-%d')
@@ -228,9 +232,10 @@ class base_tactics:
         print(self.today,act,"交易价",trading_price,"交易金额",math.floor(trading_vol * trading_price),"交易量",math.floor(trading_vol),"持有量",math.floor(self.hold_stock),"总价值",math.floor(all_money + self.cur_money),reson)
         self.record_list.append(act_record)
 
-    def cal_last_average_start_date(self,max_day,from_date):
+    def cal_last_average_start_date(self,max_day,from_date,before = 0):
         from_struct = time.strptime(from_date,'%Y-%m-%d')
         cur_time_stamp = time.mktime(from_struct)
+        cur_time_stamp -= 3600 * 24 * before
         avg_price = 0
         count = 0
         sub_count = 0

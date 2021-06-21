@@ -17,6 +17,11 @@ class simulation_market:
     end_day = ""
 
     def __init__(self):
+        self.today = ""
+        self.code = None
+        self.tactics = []
+        self.start_money = 0
+        self.end_day = ""
         pass
     
 
@@ -153,7 +158,6 @@ class simulation_market:
                     today_struct = time.localtime()
                     start_date = "{0}-{1}-{2}".format(str(today_struct[0]).zfill(2),str(today_struct[1]).zfill(2),str(today_struct[2]).zfill(2))
                 start_money = input("start money ")
-                print("---------init date ",start_date)
                 tactics = every_day_tactics(int(start_money),start_date,self.code)
                 db_loader.get_ins().load_db("running_data_"+self.code)
             else:
@@ -163,7 +167,7 @@ class simulation_market:
             tactics.update_db_data()
         today_struct = time.localtime()
         today = "{0}-{1}-{2}".format(str(today_struct[0]).zfill(2),str(today_struct[1]).zfill(2),str(today_struct[2]).zfill(2))
-        print("今日交易日期",today)
+        print("今日交易日期",today,"操作代码",self.code)
         is_go = True
         self.today = today
         tactics.on_end_today(self.today)

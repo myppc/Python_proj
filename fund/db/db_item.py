@@ -46,7 +46,7 @@ class db_item:
             return None
 
     def get_all_keys(self):
-        ret = list(self.data.items())
+        ret = list(self.data.keys())
         return ret
 
     def get_all_info(self):

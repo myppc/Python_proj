@@ -1,1 +1,0 @@
-{"date": "2021-05-17", "act": "BUY", "trading_vol": 1313.7842240790371, "hold_stock": 1313.7842240790371, "trading_price": 1.9029, "cur_money": 7500, "all_money": 10000.0, "index": 0, "reson": "突破二十日最大值"}
