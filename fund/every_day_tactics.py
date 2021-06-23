@@ -155,7 +155,7 @@ class every_day_tactics(base_tactics):
                 if abs(self.limit_price -  today_avg)/self.limit_price * 100 > 3:
                     self.wave_dir = today_dir
                     self.wave.append((basis_day,today_avg))
-                    if today_dir == 1:
+                    if today_dir == 1 and self.hold_stock > 0:
                         print(basis_day,"SELL","触发平台期结束",cur_price,"持仓价",hold_price,"卖出",round(self.hold_stock/2,2),"(Y/N)?")
                         if input() == "y":
                             self.sell(self.hold_stock/2,"触发平台期结束")
@@ -164,7 +164,7 @@ class every_day_tactics(base_tactics):
                             print(basis_day,"BUY","触发平台期结束,方向向下",cur_price,"持仓价",hold_price,"加仓",round(self.cur_money/4,2),"(Y/N)?")
                             if input() == "y":
                                 self.buy(self.cur_money/4,"继续加仓")
-                        else:
+                        elif self.hold_stock > 0:
                             print(basis_day,"SELL","触发平台期结束,方向向下",cur_price,"持仓价",hold_price,"清仓",round(self.hold_stock,2),"(Y/N)?")
                             if input() == "y":
                                 self.sell(self.hold_stock,"清仓")
