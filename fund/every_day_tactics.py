@@ -94,9 +94,9 @@ class every_day_tactics(base_tactics):
         min_20 = last_price[0]
         max_20 = last_price[1]
         
-
+        
         if self.hold_stock ==0 : 
-            if cur_price > max_20:
+            if cur_price >= max_20:
                 print(basis_day,"BUY","突破二十日最大值,当前价格",cur_price,"20日最高价",max_20,"买入",round(self.last_money  * 0.25,2),"(Y/N)?")
                 if input() == "y":
                     self.buy(self.last_money  * 0.25,"突破二十日最大值")
